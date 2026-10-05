@@ -1027,7 +1027,7 @@ def translate_crop_name(crop, language="en"):
 # =====================================================
 
 with open(
-    "data/Model/crop_model.pkl",
+    "data/model/crop_model.pkl",
     "rb"
 ) as file:
 
