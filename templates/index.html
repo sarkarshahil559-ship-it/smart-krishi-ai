@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Krishi AI</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f7faf6;
+    color:#18352b;
+}
+
+button,input,select{
+    font:inherit;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    height:76px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 4%;
+    border-bottom:1px solid #e7eee9;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.brand-icon{
+    font-size:43px;
+}
+
+.brand-text h2{
+    color:#087447;
+    font-size:25px;
+    line-height:1;
+}
+
+.brand-text p{
+    font-size:11px;
+    color:#698076;
+    margin-top:5px;
+}
+
+.nav-links{
+    display:flex;
+    gap:34px;
+    align-items:center;
+}
+
+.nav-links span{
+    color:#31463e;
+    font-size:14px;
+}
+
+.nav-links .active{
+    color:#087447;
+    font-weight:bold;
+    border-bottom:3px solid #087447;
+    padding-bottom:8px;
+}
+
+.language-box{
+    position:relative;
+}
+
+.language-btn{
+    border:1px solid #9bb8aa;
+    background:white;
+    color:#164d3b;
+    border-radius:9px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.language-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:48px;
+    width:155px;
+    background:white;
+    border:1px solid #dbe7e0;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+    overflow:hidden;
+}
+
+.language-menu.show{
+    display:block;
+}
+
+.language-menu button{
+    width:100%;
+    padding:11px 14px;
+    border:0;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+}
+
+.language-menu button:hover{
+    background:#edf8f1;
+    color:#087447;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:390px;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(90deg,
+        rgba(4,53,37,.92) 0%,
+        rgba(8,87,57,.75) 48%,
+        rgba(19,90,51,.25) 100%),
+        linear-gradient(120deg,#285d42,#82ad61 52%,#e3b75e);
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:50px 5%;
+}
+
+.hero:after{
+    content:"👨‍🌾";
+    position:absolute;
+    right:9%;
+    bottom:-15px;
+    font-size:190px;
+    filter:drop-shadow(0 12px 12px rgba(0,0,0,.25));
+}
+
+.hero-content{
+    max-width:650px;
+    position:relative;
+    z-index:2;
+}
+
+.hero-small{
+    font-size:16px;
+    margin-bottom:18px;
+    color:#d9f7bc;
+}
+
+.hero h1{
+    font-size:47px;
+    line-height:1.12;
+    margin-bottom:18px;
+}
+
+.hero h1 span{
+    color:#b9f27d;
+}
+
+.hero p{
+    max-width:590px;
+    line-height:1.65;
+    color:#f0f8ee;
+    font-size:16px;
+}
+
+.hero-button{
+    margin-top:25px;
+    border:0;
+    background:#b9f27d;
+    color:#16452f;
+    padding:14px 24px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ================= SECTION TITLE ================= */
+
+.section-head{
+    text-align:center;
+    padding:48px 20px 28px;
+}
+
+.section-head .eyebrow{
+    color:#168052;
+    font-weight:bold;
+    font-size:15px;
+    margin-bottom:9px;
+}
+
+.section-head h2{
+    font-size:31px;
+    color:#17362d;
+}
+
+.section-head p{
+    color:#66786f;
+    max-width:650px;
+    margin:10px auto 0;
+    line-height:1.5;
+}
+
+/* ================= FEATURE GRID ================= */
+
+.features{
+    max-width:1180px;
+    margin:auto;
+    padding:10px 25px 35px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.feature-card{
+    min-height:270px;
+    border-radius:15px;
+    padding:22px;
+    border:1px solid #dce9df;
+    background:#fff;
+    transition:.2s;
+    display:flex;
+    flex-direction:column;
+}
+
+.feature-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(28,90,57,.12);
+}
+
+.feature-card:nth-child(1){
+    background:#eef9ed;
+}
+
+.feature-card:nth-child(2){
+    background:#fff8e7;
+}
+
+.feature-card:nth-child(3){
+    background:#edf7ff;
+}
+
+.feature-card:nth-child(4){
+    background:#f6efff;
+}
+
+.feature-card:nth-child(5){
+    background:#fff0f0;
+}
+
+.feature-card:nth-child(6){
+    background:#eefaf6;
+}
+
+.feature-card:nth-child(7){
+    background:#f7f5e9;
+}
+
+.number{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#138453;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    margin-bottom:14px;
+}
+
+.feature-icon{
+    font-size:45px;
+    margin-bottom:12px;
+}
+
+.feature-card h3{
+    font-size:20px;
+    margin-bottom:9px;
+    color:#173e31;
+}
+
+.feature-card p{
+    color:#63736c;
+    line-height:1.5;
+    font-size:14px;
+    flex:1;
+}
+
+.open-feature{
+    border:0;
+    background:transparent;
+    color:#087447;
+    text-align:left;
+    font-weight:bold;
+    cursor:pointer;
+    padding-top:16px;
+}
+
+/* ================= GREEN BANNER ================= */
+
+.info-banner{
+    max-width:1100px;
+    margin:15px auto 50px;
+    border-radius:17px;
+    padding:28px 35px;
+    background:linear-gradient(100deg,#087447,#26945b,#b7db70);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:30px;
+}
+
+.info-banner h2{
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.info-banner p{
+    color:#e8f7e9;
+    max-width:500px;
+    line-height:1.5;
+}
+
+.info-list{
+    display:grid;
+    gap:8px;
+}
+
+.info-list span{
+    font-size:14px;
+}
+
+/* ================= FORMS ================= */
+
+.forms-area{
+    max-width:850px;
+    margin:0 auto 55px;
+    padding:0 20px;
+}
+
+.feature-form{
+    display:none;
+    background:white;
+    border:1px solid #dce8e1;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 8px 30px rgba(0,0,0,.07);
+}
+
+.feature-form.active{
+    display:block;
+}
+
+.form-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.form-header h2{
+    color:#087447;
+    font-size:24px;
+}
+
+.close-form{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#edf5ef;
+    color:#267151;
+    font-size:23px;
+    cursor:pointer;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+.field label{
+    font-size:13px;
+    font-weight:bold;
+    color:#38564b;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid #ccdcd3;
+    border-radius:9px;
+    outline:none;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:#15905c;
+}
+
+.submit-btn{
+    grid-column:1/-1;
+    margin-top:8px;
+    border:0;
+    border-radius:10px;
+    padding:14px;
+    background:#087447;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#075d3a;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#063c2d;
+    color:white;
+    padding:38px 5%;
+}
+
+.footer-inner{
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+}
+
+.footer-brand h2{
+    font-size:24px;
+}
+
+.footer-brand p{
+    color:#b8d2c7;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.footer-column h3{
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+.footer-column p{
+    color:#bad0c7;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.footer-bottom{
+    max-width:1150px;
+    margin:25px auto 0;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.15);
+    color:#9dbdb1;
+    font-size:12px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .features{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .hero:after{
+        opacity:.35;
+        right:-15px;
+    }
+}
+
+@media(max-width:600px){
+
+    .navbar{
+        padding:0 15px;
+    }
+
+    .brand-text h2{
+        font-size:20px;
+    }
+
+    .brand-icon{
+        font-size:34px;
+    }
+
+    .hero{
+        min-height:440px;
+        padding:35px 22px;
+    }
+
+    .hero h1{
+        font-size:33px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+        padding:10px 18px 30px;
+    }
+
+    .info-banner{
+        margin:10px 18px 40px;
+        padding:25px;
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .submit-btn{
+        grid-column:auto;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">🌿</div>
+
+        <div class="brand-text">
+            <h2>Smart Krishi AI</h2>
+            <p data-i18n="tagline">
+                Better Farming • Better Future
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <span class="active" data-i18n="home">
+            Home
+        </span>
+
+        <span data-i18n="services">
+            Services
+        </span>
+
+        <span data-i18n="support">
+            Support
+        </span>
+
+    </div>
+
+
+    <!-- LANGUAGE -->
+
+    <div class="language-box">
+
+        <button
+            type="button"
+            class="language-btn"
+            id="languageButton">
+
+            🌐 <span id="currentLanguage">English</span> ▾
+
+        </button>
+
+
+        <div
+            class="language-menu"
+            id="languageMenu">
+
+            <button type="button" data-lang="en">
+                English
+            </button>
+
+            <button type="button" data-lang="bn">
+                বাংলা
+            </button>
+
+            <button type="button" data-lang="hi">
+                हिन्दी
+            </button>
+
+            <button type="button" data-lang="ta">
+                தமிழ்
+            </button>
+
+            <button type="button" data-lang="te">
+                తెలుగు
+            </button>
+
+            <button type="button" data-lang="mr">
+                मराठी
+            </button>
+
+            <button type="button" data-lang="gu">
+                ગુજરાતી
+            </button>
+
+            <button type="button" data-lang="kn">
+                ಕನ್ನಡ
+            </button>
+
+            <button type="button" data-lang="pa">
+                ਪੰਜਾਬੀ
+            </button>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-small" data-i18n="heroSmall">
+            🌱 Empowering Farmers, Growing Together
+        </div>
+
+
+        <h1 data-i18n="heroTitle">
+            Smart Support for
+            <br>
+            <span>a Better Farming Future</span>
+        </h1>
+
+
+        <p data-i18n="heroDescription">
+            Get intelligent agriculture assistance for crop decisions,
+            weather, irrigation, storage and market information —
+            all in one place.
+        </p>
+
+
+        <button
+            type="button"
+            class="hero-button"
+            id="exploreButton"
+            data-i18n="explore">
+
+            Explore Services →
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SECTION ================= -->
+
+<section class="section-head">
+
+    <div class="eyebrow" data-i18n="eyebrow">
+        OUR AGRICULTURE SERVICES
+    </div>
+
+    <h2 data-i18n="sectionTitle">
+        Everything a Farmer Needs
+    </h2>
+
+    <p data-i18n="sectionDescription">
+        Simple and smart tools designed to support farmers
+        from crop selection to market.
+    </p>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+
+    <!-- 1 -->
+
+    <div class="feature-card">
+
+        <div class="number">1</div>
+
+        <div class="feature-icon">🧪</div>
+
+        <h3 data-i18n="soilTitle">
+            Soil → Crop Recommendation
+        </h3>
+
+        <p data-i18n="soilDescription">
+            Get suitable crop recommendations using
+            soil and environmental data.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="soilForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 2 -->
+
+    <div class="feature-card">
+
+        <div class="number">2</div>
+
+        <div class="feature-icon">🥬</div>
+
+        <h3 data-i18n="imageTitle">
+            Crop Image Analysis
+        </h3>
+
+        <p data-i18n="imageDescription">
+            Analyze crop images for crop identification,
+            freshness, defects and quality.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="imageForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 3 -->
+
+    <div class="feature-card">
+
+        <div class="number">3</div>
+
+        <div class="feature-icon">🌦️</div>
+
+        <h3 data-i18n="weatherTitle">
+            Weather Check
+        </h3>
+
+        <p data-i18n="weatherDescription">
+            Check current weather and receive
+            farming-related advice.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="weatherForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 4 -->
+
+    <div class="feature-card">
+
+        <div class="number">4</div>
+
+        <div class="feature-icon">💧</div>
+
+        <h3 data-i18n="irrigationTitle">
+            Smart Irrigation
+        </h3>
+
+        <p data-i18n="irrigationDescription">
+            Get irrigation guidance using soil moisture
+            and weather conditions.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="irrigationForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 5 -->
+
+    <div class="feature-card">
+
+        <div class="number">5</div>
+
+        <div class="feature-icon">📦</div>
+
+        <h3 data-i18n="storageTitle">
+            Post-Harvest & Storage
+        </h3>
+
+        <p data-i18n="storageDescription">
+            Get guidance for storing harvested
+            agricultural produce.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="storageForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 6 -->
+
+    <div class="feature-card">
+
+        <div class="number">6</div>
+
+        <div class="feature-icon">📍</div>
+
+        <h3 data-i18n="finderTitle">
+            Nearby Storage Finder
+        </h3>
+
+        <p data-i18n="finderDescription">
+            Find nearby storage and cold-storage
+            facilities using your location.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="finderForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+
+    <!-- 7 -->
+
+    <div class="feature-card">
+
+        <div class="number">7</div>
+
+        <div class="feature-icon">🛒</div>
+
+        <h3 data-i18n="marketTitle">
+            Smart Market / Mandi
+        </h3>
+
+        <p data-i18n="marketDescription">
+            Check available government mandi prices
+            for agricultural crops.
+        </p>
+
+        <button
+            type="button"
+            class="open-feature"
+            data-target="marketForm"
+            data-i18n="exploreMore">
+
+            Explore →
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GREEN BANNER ================= -->
+
+<section class="info-banner">
+
+    <div>
+
+        <h2 data-i18n="bannerTitle">
+            More than just a website...
+            <br>
+            It's your farming partner!
+        </h2>
+
+        <p data-i18n="bannerDescription">
+            Smart tools and useful information to help
+            you make better farming decisions.
+        </p>
+
+    </div>
+
+
+    <div class="info-list">
+
+        <span data-i18n="benefit1">
+            ✓ Make better crop decisions
+        </span>
+
+        <span data-i18n="benefit2">
+            ✓ Improve crop management
+        </span>
+
+        <span data-i18n="benefit3">
+            ✓ Stay informed about weather
+        </span>
+
+        <span data-i18n="benefit4">
+            ✓ Find storage and market information
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FORMS ================= -->
+
+<section class="forms-area">
+
+
+    <!-- SOIL -->
+
+    <div class="feature-form" id="soilForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="soilFormTitle">
+                🧪 Soil Information
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/analyze" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="soilLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label data-i18n="location">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        data-placeholder="locationPlaceholder"
+                        placeholder="Enter your location"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="ph">
+                        Soil pH
+                    </label>
+
+                    <input
+                        type="number"
+                        name="ph"
+                        step="0.01"
+                        placeholder="Example: 6.5"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="nitrogen">
+                        Nitrogen
+                    </label>
+
+                    <input
+                        type="number"
+                        name="nitrogen"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="phosphorus">
+                        Phosphorus
+                    </label>
+
+                    <input
+                        type="number"
+                        name="phosphorus"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="potassium">
+                        Potassium
+                    </label>
+
+                    <input
+                        type="number"
+                        name="potassium"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="moisture">
+                        Soil Moisture
+                    </label>
+
+                    <input
+                        type="number"
+                        name="moisture"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="temperature">
+                        Temperature
+                    </label>
+
+                    <input
+                        type="number"
+                        name="temperature"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="humidity">
+                        Humidity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="humidity"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="rainfall">
+                        Rainfall
+                    </label>
+
+                    <input
+                        type="number"
+                        name="rainfall"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="season">
+                        Season
+                    </label>
+
+                    <select name="season">
+
+                        <option
+                            value=""
+                            data-i18n="selectSeason">
+
+                            Select season
+
+                        </option>
+
+                        <option
+                            value="Kharif"
+                            data-season="kharif">
+
+                            Kharif
+
+                        </option>
+
+                        <option
+                            value="Rabi"
+                            data-season="rabi">
+
+                            Rabi
+
+                        </option>
+
+                        <option
+                            value="Zaid"
+                            data-season="zaid">
+
+                            Zaid
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="getRecommendation">
+
+                    🌱 Get Recommendation
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- IMAGE -->
+
+    <div class="feature-form" id="imageForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="imageFormTitle">
+                🥬 Crop Image Analysis
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            action="/analyze-image"
+            method="POST"
+            enctype="multipart/form-data">
+
+            <input
+                type="hidden"
+                name="language"
+                id="imageLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label data-i18n="uploadImage">
+                        Upload Crop Image
+                    </label>
+
+                    <input
+                        type="file"
+                        name="crop_image"
+                        accept="image/*"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="analyzeImage">
+
+                    🔍 Analyze Image
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- WEATHER -->
+
+    <div class="feature-form" id="weatherForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="weatherFormTitle">
+                🌦️ Weather Check
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/weather" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="weatherLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label data-i18n="location">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="weather_location"
+                        data-placeholder="weatherPlaceholder"
+                        placeholder="Enter city or location"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="checkWeather">
+
+                    🌦️ Check Weather
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- IRRIGATION -->
+
+    <div class="feature-form" id="irrigationForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="irrigationFormTitle">
+                💧 Smart Irrigation
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/irrigation" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="irrigationLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label data-i18n="moisture">
+                        Soil Moisture
+                    </label>
+
+                    <input
+                        type="number"
+                        name="irrigation_moisture"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="temperature">
+                        Temperature
+                    </label>
+
+                    <input
+                        type="number"
+                        name="irrigation_temperature"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="humidity">
+                        Humidity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="irrigation_humidity"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="rainfall">
+                        Rainfall
+                    </label>
+
+                    <input
+                        type="number"
+                        name="irrigation_rainfall"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="irrigationAdvice">
+
+                    💧 Get Irrigation Advice
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- STORAGE -->
+
+    <div class="feature-form" id="storageForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="storageFormTitle">
+                📦 Post-Harvest & Storage
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/storage" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="storageLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label data-i18n="crop">
+                        Crop
+                    </label>
+
+                    <select name="storage_crop" required>
+
+                        <option value="" data-i18n="selectCrop">
+                            Select crop
+                        </option>
+
+                        <option value="Rice">Rice</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Maize">Maize</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Onion">Onion</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Brinjal">Brinjal</option>
+                        <option value="Chilli">Chilli</option>
+                        <option value="Cucumber">Cucumber</option>
+                        <option value="Carrot">Carrot</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="storageTemperature">
+                        Storage Temperature
+                    </label>
+
+                    <input
+                        type="number"
+                        name="storage_temperature"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="storageHumidity">
+                        Storage Humidity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="storage_humidity"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label data-i18n="storageDays">
+                        Storage Days
+                    </label>
+
+                    <input
+                        type="number"
+                        name="storage_days"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="storageAdvice">
+
+                    📦 Get Storage Advice
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- FINDER -->
+
+    <div class="feature-form" id="finderForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="finderFormTitle">
+                📍 Nearby Storage Finder
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/storage-finder" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="finderLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label data-i18n="location">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="storage_location"
+                        data-placeholder="locationPlaceholder"
+                        placeholder="Enter your location"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label data-i18n="crop">
+                        Crop
+                    </label>
+
+                    <select
+                        name="storage_finder_crop"
+                        required>
+
+                        <option value="" data-i18n="selectCrop">
+                            Select crop
+                        </option>
+
+                        <option value="Rice">Rice</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Maize">Maize</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Onion">Onion</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Brinjal">Brinjal</option>
+                        <option value="Chilli">Chilli</option>
+                        <option value="Cucumber">Cucumber</option>
+                        <option value="Carrot">Carrot</option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="findStorage">
+
+                    📍 Find Storage
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- MARKET -->
+
+    <div class="feature-form" id="marketForm">
+
+        <div class="form-header">
+
+            <h2 data-i18n="marketFormTitle">
+                🛒 Smart Market / Mandi
+            </h2>
+
+            <button type="button" class="close-form">
+                ×
+            </button>
+
+        </div>
+
+
+        <form action="/market" method="POST">
+
+            <input
+                type="hidden"
+                name="language"
+                id="marketLanguage"
+                value="en"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label data-i18n="state">
+                        State
+                    </label>
+
+                    <input
+                        type="text"
+                        name="market_state"
+                        data-placeholder="statePlaceholder"
+                        placeholder="Enter state"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="district">
+                        District
+                    </label>
+
+                    <input
+                        type="text"
+                        name="market_district"
+                        data-placeholder="districtPlaceholder"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="city">
+                        City / Area
+                    </label>
+
+                    <input
+                        type="text"
+                        name="market_city"
+                        data-placeholder="cityPlaceholder"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label data-i18n="crop">
+                        Crop
+                    </label>
+
+                    <select name="market_crop" required>
+
+                        <option value="" data-i18n="selectCrop">
+                            Select crop
+                        </option>
+
+                        <option value="Rice">Rice</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Maize">Maize</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Onion">Onion</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Brinjal">Brinjal</option>
+                        <option value="Chilli">Chilli</option>
+                        <option value="Cucumber">Cucumber</option>
+                        <option value="Carrot">Carrot</option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    data-i18n="checkMarket">
+
+                    🛒 Check Market Prices
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+
+            <h2>🌿 Smart Krishi AI</h2>
+
+            <p data-i18n="footerTagline">
+                Better Farming • Better Future
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3 data-i18n="quickLinks">
+                Quick Links
+            </h3>
+
+            <p data-i18n="home">
+                Home
+            </p>
+
+            <p data-i18n="services">
+                Services
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3 data-i18n="help">
+                Help
+            </h3>
+
+            <p data-i18n="support">
+                Support
+            </p>
+
+            <p data-i18n="contact">
+                Contact
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        © 2026 Smart Krishi AI
+
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+const translations = {
+
+    en:{
+        name:"English",
+        tagline:"Better Farming • Better Future",
+        home:"Home",
+        services:"Services",
+        support:"Support",
+        contact:"Contact",
+
+        heroSmall:"🌱 Empowering Farmers, Growing Together",
+        heroTitle:"Smart Support for<br><span>a Better Farming Future</span>",
+        heroDescription:"Get intelligent agriculture assistance for crop decisions, weather, irrigation, storage and market information — all in one place.",
+        explore:"Explore Services →",
+
+        eyebrow:"OUR AGRICULTURE SERVICES",
+        sectionTitle:"Everything a Farmer Needs",
+        sectionDescription:"Simple and smart tools designed to support farmers from crop selection to market.",
+
+        soilTitle:"Soil → Crop Recommendation",
+        soilDescription:"Get suitable crop recommendations using soil and environmental data.",
+
+        imageTitle:"Crop Image Analysis",
+        imageDescription:"Analyze crop images for crop identification, freshness, defects and quality.",
+
+        weatherTitle:"Weather Check",
+        weatherDescription:"Check current weather and receive farming-related advice.",
+
+        irrigationTitle:"Smart Irrigation",
+        irrigationDescription:"Get irrigation guidance using soil moisture and weather conditions.",
+
+        storageTitle:"Post-Harvest & Storage",
+        storageDescription:"Get guidance for storing harvested agricultural produce.",
+
+        finderTitle:"Nearby Storage Finder",
+        finderDescription:"Find nearby storage and cold-storage facilities using your location.",
+
+        marketTitle:"Smart Market / Mandi",
+        marketDescription:"Check available government mandi prices for agricultural crops.",
+
+        exploreMore:"Explore →",
+
+        bannerTitle:"More than just a website...<br>It's your farming partner!",
+        bannerDescription:"Smart tools and useful information to help you make better farming decisions.",
+        benefit1:"✓ Make better crop decisions",
+        benefit2:"✓ Improve crop management",
+        benefit3:"✓ Stay informed about weather",
+        benefit4:"✓ Find storage and market information",
+
+        soilFormTitle:"🧪 Soil Information",
+        imageFormTitle:"🥬 Crop Image Analysis",
+        weatherFormTitle:"🌦️ Weather Check",
+        irrigationFormTitle:"💧 Smart Irrigation",
+        storageFormTitle:"📦 Post-Harvest & Storage",
+        finderFormTitle:"📍 Nearby Storage Finder",
+        marketFormTitle:"🛒 Smart Market / Mandi",
+
+        location:"Location",
+        locationPlaceholder:"Enter your location",
+        weatherPlaceholder:"Enter city or location",
+
+        ph:"Soil pH",
+        nitrogen:"Nitrogen",
+        phosphorus:"Phosphorus",
+        potassium:"Potassium",
+        moisture:"Soil Moisture",
+        temperature:"Temperature",
+        humidity:"Humidity",
+        rainfall:"Rainfall",
+        season:"Season",
+        selectSeason:"Select season",
+
+        kharif:"Kharif",
+        rabi:"Rabi",
+        zaid:"Zaid",
+
+        getRecommendation:"🌱 Get Recommendation",
+        uploadImage:"Upload Crop Image",
+        analyzeImage:"🔍 Analyze Image",
+        checkWeather:"🌦️ Check Weather",
+        irrigationAdvice:"💧 Get Irrigation Advice",
+
+        crop:"Crop",
+        selectCrop:"Select crop",
+        storageTemperature:"Storage Temperature",
+        storageHumidity:"Storage Humidity",
+        storageDays:"Storage Days",
+        storageAdvice:"📦 Get Storage Advice",
+
+        findStorage:"📍 Find Storage",
+
+        state:"State",
+        district:"District",
+        city:"City / Area",
+        statePlaceholder:"Enter state",
+        districtPlaceholder:"Enter district",
+        cityPlaceholder:"Enter city or area",
+        checkMarket:"🛒 Check Market Prices",
+
+        quickLinks:"Quick Links",
+        help:"Help",
+        footerTagline:"Better Farming • Better Future"
+    },
+
+
+    bn:{
+        name:"বাংলা",
+        tagline:"উন্নত কৃষি • উন্নত ভবিষ্যৎ",
+        home:"হোম",
+        services:"পরিষেবা",
+        support:"সহায়তা",
+        contact:"যোগাযোগ",
+
+        heroSmall:"🌱 কৃষকদের ক্ষমতায়ন, একসাথে উন্নতি",
+        heroTitle:"কৃষির জন্য স্মার্ট সহায়তা<br><span>আরও ভালো ভবিষ্যতের জন্য</span>",
+        heroDescription:"ফসল নির্বাচন, আবহাওয়া, সেচ, সংরক্ষণ এবং বাজারের তথ্যের জন্য বুদ্ধিমান কৃষি সহায়তা — সব এক জায়গায়।",
+        explore:"পরিষেবাগুলি দেখুন →",
+
+        eyebrow:"আমাদের কৃষি পরিষেবা",
+        sectionTitle:"একজন কৃষকের যা যা প্রয়োজন",
+        sectionDescription:"ফসল নির্বাচন থেকে বাজার পর্যন্ত কৃষকদের সহায়তার জন্য সহজ ও স্মার্ট টুল।",
+
+        soilTitle:"মাটি → ফসল সুপারিশ",
+        soilDescription:"মাটি ও পরিবেশের তথ্য ব্যবহার করে উপযুক্ত ফসলের সুপারিশ পান।",
+
+        imageTitle:"ফসলের ছবি বিশ্লেষণ",
+        imageDescription:"ফসলের ছবি থেকে ফসল, সতেজতা, ত্রুটি ও গুণমান বিশ্লেষণ করুন।",
+
+        weatherTitle:"আবহাওয়া পরীক্ষা",
+        weatherDescription:"বর্তমান আবহাওয়া দেখুন এবং কৃষি সংক্রান্ত পরামর্শ পান।",
+
+        irrigationTitle:"স্মার্ট সেচ",
+        irrigationDescription:"মাটির আর্দ্রতা ও আবহাওয়ার ভিত্তিতে সেচের পরামর্শ পান।",
+
+        storageTitle:"ফসল কাটার পর ও সংরক্ষণ",
+        storageDescription:"কৃষিজাত পণ্য সংরক্ষণের জন্য পরামর্শ পান।",
+
+        finderTitle:"কাছাকাছি স্টোরেজ খোঁজুন",
+        finderDescription:"আপনার অবস্থানের কাছাকাছি স্টোরেজ ও কোল্ড স্টোরেজ খুঁজুন।",
+
+        marketTitle:"স্মার্ট বাজার / মান্ডি",
+        marketDescription:"কৃষিপণ্যের উপলব্ধ সরকারি মান্ডি দাম দেখুন।",
+
+        exploreMore:"দেখুন →",
+
+        bannerTitle:"শুধু একটি ওয়েবসাইট নয়...<br>এটি আপনার কৃষি সঙ্গী!",
+        bannerDescription:"আরও ভালো কৃষি সিদ্ধান্ত নিতে স্মার্ট টুল ও দরকারি তথ্য।",
+        benefit1:"✓ ভালো ফসলের সিদ্ধান্ত নিন",
+        benefit2:"✓ ফসল ব্যবস্থাপনা উন্নত করুন",
+        benefit3:"✓ আবহাওয়ার খবর রাখুন",
+        benefit4:"✓ স্টোরেজ ও বাজারের তথ্য পান",
+
+        soilFormTitle:"🧪 মাটির তথ্য",
+        imageFormTitle:"🥬 ফসলের ছবি বিশ্লেষণ",
+        weatherFormTitle:"🌦️ আবহাওয়া পরীক্ষা",
+        irrigationFormTitle:"💧 স্মার্ট সেচ",
+        storageFormTitle:"📦 ফসল কাটার পর ও সংরক্ষণ",
+        finderFormTitle:"📍 কাছাকাছি স্টোরেজ খোঁজুন",
+        marketFormTitle:"🛒 স্মার্ট বাজার / মান্ডি",
+
+        location:"স্থান",
+        locationPlaceholder:"আপনার স্থান লিখুন",
+        weatherPlaceholder:"শহর বা স্থান লিখুন",
+
+        ph:"মাটির pH",
+        nitrogen:"নাইট্রোজেন",
+        phosphorus:"ফসফরাস",
+        potassium:"পটাশিয়াম",
+        moisture:"মাটির আর্দ্রতা",
+        temperature:"তাপমাত্রা",
+        humidity:"আর্দ্রতা",
+        rainfall:"বৃষ্টিপাত",
+        season:"মৌসুম",
+        selectSeason:"মৌসুম নির্বাচন করুন",
+
+        kharif:"খরিফ",
+        rabi:"রবি",
+        zaid:"জায়েদ",
+
+        getRecommendation:"🌱 সুপারিশ দেখুন",
+        uploadImage:"ফসলের ছবি আপলোড করুন",
+        analyzeImage:"🔍 ছবি বিশ্লেষণ করুন",
+        checkWeather:"🌦️ আবহাওয়া দেখুন",
+        irrigationAdvice:"💧 সেচের পরামর্শ পান",
+
+        crop:"ফসল",
+        selectCrop:"ফসল নির্বাচন করুন",
+        storageTemperature:"সংরক্ষণের তাপমাত্রা",
+        storageHumidity:"সংরক্ষণের আর্দ্রতা",
+        storageDays:"সংরক্ষণের দিন",
+        storageAdvice:"📦 সংরক্ষণের পরামর্শ পান",
+
+        findStorage:"📍 স্টোরেজ খুঁজুন",
+
+        state:"রাজ্য",
+        district:"জেলা",
+        city:"শহর / এলাকা",
+        statePlaceholder:"রাজ্য লিখুন",
+        districtPlaceholder:"জেলা লিখুন",
+        cityPlaceholder:"শহর বা এলাকা লিখুন",
+        checkMarket:"🛒 বাজারের দাম দেখুন",
+
+        quickLinks:"দ্রুত লিংক",
+        help:"সহায়তা",
+        footerTagline:"উন্নত কৃষি • উন্নত ভবিষ্যৎ"
+    },
+
+
+    hi:{
+        name:"हिन्दी",
+        tagline:"बेहतर खेती • बेहतर भविष्य",
+        home:"होम",
+        services:"सेवाएं",
+        support:"सहायता",
+        contact:"संपर्क",
+
+        heroSmall:"🌱 किसानों को सशक्त बनाना, साथ मिलकर आगे बढ़ना",
+        heroTitle:"खेती के लिए स्मार्ट सहायता<br><span>बेहतर भविष्य के लिए</span>",
+        heroDescription:"फसल, मौसम, सिंचाई, भंडारण और बाजार की जानकारी के लिए स्मार्ट कृषि सहायता — सब एक जगह।",
+        explore:"सेवाएं देखें →",
+
+        eyebrow:"हमारी कृषि सेवाएं",
+        sectionTitle:"हर किसान के लिए जरूरी",
+        sectionDescription:"फसल चयन से बाजार तक किसानों की सहायता के लिए सरल और स्मार्ट टूल।",
+
+        soilTitle:"मिट्टी → फसल सुझाव",
+        soilDescription:"मिट्टी और पर्यावरण के डेटा से उपयुक्त फसल की सलाह पाएं।",
+        imageTitle:"फसल फोटो विश्लेषण",
+        imageDescription:"फसल की फोटो से फसल, ताजगी, दोष और गुणवत्ता का विश्लेषण करें।",
+        weatherTitle:"मौसम जांच",
+        weatherDescription:"वर्तमान मौसम देखें और कृषि सलाह पाएं।",
+        irrigationTitle:"स्मार्ट सिंचाई",
+        irrigationDescription:"मिट्टी की नमी और मौसम के आधार पर सिंचाई सलाह पाएं।",
+        storageTitle:"कटाई के बाद और भंडारण",
+        storageDescription:"कृषि उत्पादों के भंडारण के लिए सलाह पाएं।",
+        finderTitle:"नजदीकी भंडारण खोजें",
+        finderDescription:"अपने स्थान के पास स्टोरेज और कोल्ड स्टोरेज खोजें।",
+        marketTitle:"स्मार्ट बाजार / मंडी",
+        marketDescription:"कृषि उत्पादों की उपलब्ध सरकारी मंडी कीमतें देखें.",
+        exploreMore:"देखें →",
+
+        bannerTitle:"सिर्फ वेबसाइट नहीं...<br>यह आपका खेती का साथी है!",
+        bannerDescription:"बेहतर खेती के निर्णय लेने के लिए स्मार्ट टूल और उपयोगी जानकारी।",
+        benefit1:"✓ बेहतर फसल निर्णय",
+        benefit2:"✓ फसल प्रबंधन में सुधार",
+        benefit3:"✓ मौसम की जानकारी रखें",
+        benefit4:"✓ स्टोरेज और बाजार की जानकारी पाएं",
+
+        soilFormTitle:"🧪 मिट्टी की जानकारी",
+        imageFormTitle:"🥬 फसल फोटो विश्लेषण",
+        weatherFormTitle:"🌦️ मौसम जांच",
+        irrigationFormTitle:"💧 स्मार्ट सिंचाई",
+        storageFormTitle:"📦 कटाई के बाद और भंडारण",
+        finderFormTitle:"📍 नजदीकी भंडारण खोजें",
+        marketFormTitle:"🛒 स्मार्ट बाजार / मंडी",
+
+        location:"स्थान",
+        locationPlaceholder:"अपना स्थान दर्ज करें",
+        weatherPlaceholder:"शहर या स्थान दर्ज करें",
+        ph:"मिट्टी का pH",
+        nitrogen:"नाइट्रोजन",
+        phosphorus:"फॉस्फोरस",
+        potassium:"पोटैशियम",
+        moisture:"मिट्टी की नमी",
+        temperature:"तापमान",
+        humidity:"आर्द्रता",
+        rainfall:"वर्षा",
+        season:"मौसम",
+        selectSeason:"मौसम चुनें",
+        kharif:"खरीफ",
+        rabi:"रबी",
+        zaid:"जायद",
+        getRecommendation:"🌱 सुझाव प्राप्त करें",
+        uploadImage:"फसल की फोटो अपलोड करें",
+        analyzeImage:"🔍 फोटो का विश्लेषण करें",
+        checkWeather:"🌦️ मौसम देखें",
+        irrigationAdvice:"💧 सिंचाई सलाह पाएं",
+        crop:"फसल",
+        selectCrop:"फसल चुनें",
+        storageTemperature:"भंडारण तापमान",
+        storageHumidity:"भंडारण आर्द्रता",
+        storageDays:"भंडारण के दिन",
+        storageAdvice:"📦 भंडारण सलाह पाएं",
+        findStorage:"📍 भंडारण खोजें",
+        state:"राज्य",
+        district:"जिला",
+        city:"शहर / क्षेत्र",
+        statePlaceholder:"राज्य दर्ज करें",
+        districtPlaceholder:"जिला दर्ज करें",
+        cityPlaceholder:"शहर या क्षेत्र दर्ज करें",
+        checkMarket:"🛒 बाजार कीमत देखें",
+        quickLinks:"त्वरित लिंक",
+        help:"सहायता",
+        footerTagline:"बेहतर खेती • बेहतर भविष्य"
+    },
+
+
+    ta:{
+        name:"தமிழ்",
+        tagline:"சிறந்த விவசாயம் • சிறந்த எதிர்காலம்",
+        home:"முகப்பு",
+        services:"சேவைகள்",
+        support:"உதவி",
+        contact:"தொடர்பு",
+        heroSmall:"🌱 விவசாயிகளுக்கு ஸ்மார்ட் உதவி",
+        heroTitle:"விவசாயத்திற்கான ஸ்மார்ட் உதவி<br><span>சிறந்த எதிர்காலத்திற்காக</span>",
+        heroDescription:"பயிர், வானிலை, பாசனம், சேமிப்பு மற்றும் சந்தை தகவல்களுக்கான ஸ்மார்ட் விவசாய உதவி.",
+        explore:"சேவைகளைப் பார்க்கவும் →",
+        eyebrow:"எங்கள் விவசாய சேவைகள்",
+        sectionTitle:"ஒவ்வொரு விவசாயிக்கும் தேவையானவை",
+        sectionDescription:"பயிர் தேர்விலிருந்து சந்தை வரை உதவும் எளிய ஸ்மார்ட் கருவிகள்.",
+        soilTitle:"மண் → பயிர் பரிந்துரை",
+        soilDescription:"மண் மற்றும் சுற்றுச்சூழல் தரவின் அடிப்படையில் பயிர் பரிந்துரை.",
+        imageTitle:"பயிர் படம் பகுப்பாய்வு",
+        imageDescription:"பயிர், புத்துணர்ச்சி, குறைபாடுகள் மற்றும் தரத்தை பகுப்பாய்வு செய்யுங்கள்.",
+        weatherTitle:"வானிலை சரிபார்ப்பு",
+        weatherDescription:"தற்போதைய வானிலையைப் பார்த்து விவசாய ஆலோசனை பெறுங்கள்.",
+        irrigationTitle:"ஸ்மார்ட் பாசனம்",
+        irrigationDescription:"மண் ஈரப்பதம் மற்றும் வானிலையின் அடிப்படையில் பாசன ஆலோசனை.",
+        storageTitle:"அறுவடைக்குப் பிந்தைய சேமிப்பு",
+        storageDescription:"விவசாய விளைபொருட்களை சேமிப்பதற்கான ஆலோசனை.",
+        finderTitle:"அருகிலுள்ள சேமிப்பு",
+        finderDescription:"உங்கள் இடத்திற்கு அருகிலுள்ள சேமிப்பு மற்றும் குளிர்சாதன கிடங்குகளை கண்டறியுங்கள்.",
+        marketTitle:"ஸ்மார்ட் சந்தை / மண்டி",
+        marketDescription:"கிடைக்கும் அரசு மண்டி விலைகளைப் பாருங்கள்.",
+        exploreMore:"பார்க்கவும் →",
+        bannerTitle:"ஒரு இணையதளம் மட்டுமல்ல...<br>உங்கள் விவசாய நண்பர்!",
+        bannerDescription:"சிறந்த விவசாய முடிவுகளுக்கான ஸ்மார்ட் கருவிகள்.",
+        benefit1:"✓ சிறந்த பயிர் முடிவுகள்",
+        benefit2:"✓ பயிர் மேலாண்மை",
+        benefit3:"✓ வானிலை தகவல்",
+        benefit4:"✓ சேமிப்பு மற்றும் சந்தை தகவல்",
+        soilFormTitle:"🧪 மண் தகவல்",
+        imageFormTitle:"🥬 பயிர் படம் பகுப்பாய்வு",
+        weatherFormTitle:"🌦️ வானிலை",
+        irrigationFormTitle:"💧 ஸ்மார்ட் பாசனம்",
+        storageFormTitle:"📦 சேமிப்பு",
+        finderFormTitle:"📍 அருகிலுள்ள சேமிப்பு",
+        marketFormTitle:"🛒 ஸ்மார்ட் சந்தை / மண்டி",
+        location:"இடம்",
+        locationPlaceholder:"உங்கள் இடத்தை உள்ளிடவும்",
+        weatherPlaceholder:"நகரம் அல்லது இடத்தை உள்ளிடவும்",
+        ph:"மண் pH",
+        nitrogen:"நைட்ரஜன்",
+        phosphorus:"பாஸ்பரஸ்",
+        potassium:"பொட்டாசியம்",
+        moisture:"மண் ஈரப்பதம்",
+        temperature:"வெப்பநிலை",
+        humidity:"ஈரப்பதம்",
+        rainfall:"மழைப்பொழிவு",
+        season:"பருவம்",
+        selectSeason:"பருவத்தைத் தேர்ந்தெடுக்கவும்",
+        kharif:"காரிஃப்",
+        rabi:"ரபி",
+        zaid:"சயீத்",
+        getRecommendation:"🌱 பரிந்துரையைப் பெறவும்",
+        uploadImage:"பயிர் படத்தை பதிவேற்றவும்",
+        analyzeImage:"🔍 படத்தை பகுப்பாய்வு செய்யவும்",
+        checkWeather:"🌦️ வானிலையைப் பார்க்கவும்",
+        irrigationAdvice:"💧 பாசன ஆலோசனை",
+        crop:"பயிர்",
+        selectCrop:"பயிரைத் தேர்ந்தெடுக்கவும்",
+        storageTemperature:"சேமிப்பு வெப்பநிலை",
+        storageHumidity:"சேமிப்பு ஈரப்பதம்",
+        storageDays:"சேமிப்பு நாட்கள்",
+        storageAdvice:"📦 சேமிப்பு ஆலோசனை",
+        findStorage:"📍 சேமிப்பைத் தேடவும்",
+        state:"மாநிலம்",
+        district:"மாவட்டம்",
+        city:"நகரம் / பகுதி",
+        statePlaceholder:"மாநிலத்தை உள்ளிடவும்",
+        districtPlaceholder:"மாவட்டத்தை உள்ளிடவும்",
+        cityPlaceholder:"நகரம் அல்லது பகுதியை உள்ளிடவும்",
+        checkMarket:"🛒 சந்தை விலையைப் பார்க்கவும்",
+        quickLinks:"விரைவு இணைப்புகள்",
+        help:"உதவி",
+        footerTagline:"சிறந்த விவசாயம் • சிறந்த எதிர்காலம்"
+    }
+
+};
+
+
+/* ================= FALLBACK LANGUAGES ================= */
+
+translations.te = translations.en;
+translations.mr = translations.en;
+translations.gu = translations.en;
+translations.kn = translations.en;
+translations.pa = translations.en;
+
+
+/* ================= LANGUAGE ================= */
+
+let currentLang = "en";
+
+
+function setLanguage(lang){
+
+    if(!translations[lang]){
+        lang="en";
+    }
+
+    currentLang=lang;
+
+    const t=translations[lang];
+
+
+    document.querySelectorAll("[data-i18n]").forEach(el=>{
+
+        const key=el.getAttribute("data-i18n");
+
+        if(t[key] !== undefined){
+            el.innerHTML=t[key];
+        }
+
+    });
+
+
+    document.querySelectorAll("[data-placeholder]").forEach(el=>{
+
+        const key=el.getAttribute("data-placeholder");
+
+        if(t[key] !== undefined){
+            el.placeholder=t[key];
+        }
+
+    });
+
+
+    document.querySelectorAll("[data-season]").forEach(el=>{
+
+        const key=el.getAttribute("data-season");
+
+        if(t[key] !== undefined){
+            el.textContent=t[key];
+        }
+
+    });
+
+
+    document.getElementById("currentLanguage").textContent=t.name;
+
+
+    const languageInputs=[
+
+        "soilLanguage",
+        "imageLanguage",
+        "weatherLanguage",
+        "irrigationLanguage",
+        "storageLanguage",
+        "finderLanguage",
+        "marketLanguage"
+
+    ];
+
+
+    languageInputs.forEach(id=>{
+
+        const input=document.getElementById(id);
+
+        if(input){
+            input.value=lang;
+        }
+
+    });
+
+
+    document.documentElement.lang=lang;
+
+    document.getElementById("languageMenu")
+        .classList.remove("show");
+}
+
+
+/* ================= LANGUAGE MENU ================= */
+
+const languageButton=
+    document.getElementById("languageButton");
+
+const languageMenu=
+    document.getElementById("languageMenu");
+
+
+languageButton.addEventListener("click",function(){
+
+    languageMenu.classList.toggle("show");
+
+});
+
+
+document.querySelectorAll("[data-lang]").forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        setLanguage(
+            this.getAttribute("data-lang")
+        );
+
+    });
+
+});
+
+
+document.addEventListener("click",function(e){
+
+    if(
+        !languageButton.contains(e.target) &&
+        !languageMenu.contains(e.target)
+    ){
+
+        languageMenu.classList.remove("show");
+
+    }
+
+});
+
+
+/* ================= FEATURE OPEN ================= */
+
+document.querySelectorAll(".open-feature").forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        const target=
+            document.getElementById(
+                this.getAttribute("data-target")
+            );
+
+        if(!target){
+            return;
+        }
+
+        document.querySelectorAll(".feature-form")
+            .forEach(form=>{
+                form.classList.remove("active");
+            });
+
+        target.classList.add("active");
+
+        target.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    });
+
+});
+
+
+/* ================= CLOSE ================= */
+
+document.querySelectorAll(".close-form").forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        const form=
+            this.closest(".feature-form");
+
+        if(form){
+            form.classList.remove("active");
+        }
+
+    });
+
+});
+
+
+/* ================= EXPLORE ================= */
+
+document.getElementById("exploreButton")
+    .addEventListener("click",function(){
+
+        document.querySelector(".features")
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    });
+
+
+/* ================= START ================= */
+
+setLanguage("en");
+
+</script>
+
+</body>
+</html>

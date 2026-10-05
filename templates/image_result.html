@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="{{ language|default('en') }}">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Crop Analysis - Smart Krishi AI
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🌾 Smart Krishi AI</h1>
+
+    <p>
+        {% if language == "bn" %}
+            AI-চালিত কৃষি সহায়তা
+        {% elif language == "hi" %}
+            AI-संचालित कृषि सहायता
+        {% elif language == "ta" %}
+            AI சார்ந்த விவசாய உதவி
+        {% elif language == "te" %}
+            AI ఆధారిత వ్యవసాయ సహాయం
+        {% elif language == "mr" %}
+            AI-आधारित कृषी सहाय्य
+        {% elif language == "gu" %}
+            AI આધારિત કૃષિ સહાય
+        {% elif language == "kn" %}
+            AI ಆಧಾರಿತ ಕೃಷಿ ಸಹಾಯ
+        {% elif language == "pa" %}
+            AI ਆਧਾਰਿਤ ਖੇਤੀਬਾੜੀ ਸਹਾਇਤਾ
+        {% else %}
+            AI-Powered Agriculture Assistant
+        {% endif %}
+    </p>
+
+</header>
+
+
+<main>
+
+
+<section class="welcome">
+
+    <h2>
+
+        {% if language == "bn" %}
+            🥬 ফসলের ছবি বিশ্লেষণের ফলাফল
+        {% elif language == "hi" %}
+            🥬 फसल फोटो विश्लेषण परिणाम
+        {% elif language == "ta" %}
+            🥬 பயிர் படம் பகுப்பாய்வு முடிவு
+        {% elif language == "te" %}
+            🥬 పంట చిత్ర విశ్లేషణ ఫలితం
+        {% elif language == "mr" %}
+            🥬 पिकाच्या फोटोचे विश्लेषण परिणाम
+        {% elif language == "gu" %}
+            🥬 પાકના ફોટો વિશ્લેષણનું પરિણામ
+        {% elif language == "kn" %}
+            🥬 ಬೆಳೆ ಚಿತ್ರದ ವಿಶ್ಲೇಷಣೆ ಫಲಿತಾಂಶ
+        {% elif language == "pa" %}
+            🥬 ਫਸਲ ਫੋਟੋ ਵਿਸ਼ਲੇਸ਼ਣ ਨਤੀਜਾ
+        {% else %}
+            🥬 Crop Photo Analysis Result
+        {% endif %}
+
+    </h2>
+
+
+    <p>
+
+        {% if language == "bn" %}
+            আপনার ফসলের ছবি অফলাইন কম্পিউটার ভিশন ব্যবহার করে বিশ্লেষণ করা হয়েছে।
+        {% elif language == "hi" %}
+            आपकी फसल की फोटो का विश्लेषण ऑफलाइन कंप्यूटर विज़न का उपयोग करके किया गया है।
+        {% elif language == "ta" %}
+            உங்கள் பயிர் படம் ஆஃப்லைன் கணினி பார்வையைப் பயன்படுத்தி பகுப்பாய்வு செய்யப்பட்டது.
+        {% elif language == "te" %}
+            మీ పంట చిత్రాన్ని ఆఫ్‌లైన్ కంప్యూటర్ విజన్ ఉపయోగించి విశ్లేషించాం.
+        {% elif language == "mr" %}
+            तुमच्या पिकाच्या फोटोचे ऑफलाइन कॉम्प्युटर व्हिजन वापरून विश्लेषण केले आहे.
+        {% elif language == "gu" %}
+            તમારા પાકના ફોટાનું ઑફલાઇન કમ્પ્યુટર વિઝન દ્વારા વિશ્લેષણ કરવામાં આવ્યું છે.
+        {% elif language == "kn" %}
+            ನಿಮ್ಮ ಬೆಳೆ ಚಿತ್ರವನ್ನು ಆಫ್‌ಲೈನ್ ಕಂಪ್ಯೂಟರ್ ವಿಷನ್ ಬಳಸಿ ವಿಶ್ಲೇಷಿಸಲಾಗಿದೆ.
+        {% elif language == "pa" %}
+            ਤੁਹਾਡੀ ਫਸਲ ਦੀ ਫੋਟੋ ਦਾ ਆਫਲਾਈਨ ਕੰਪਿਊਟਰ ਵਿਜ਼ਨ ਨਾਲ ਵਿਸ਼ਲੇਸ਼ਣ ਕੀਤਾ ਗਿਆ ਹੈ।
+        {% else %}
+            Your crop image has been analyzed using offline computer vision.
+        {% endif %}
+
+    </p>
+
+</section>
+
+
+<!-- CROP -->
+
+<section class="card">
+
+    <h2>
+        🌾
+
+        {% if language == "bn" %}
+            ফসলের তথ্য
+        {% elif language == "hi" %}
+            फसल की जानकारी
+        {% elif language == "ta" %}
+            பயிர் தகவல்
+        {% elif language == "te" %}
+            పంట సమాచారం
+        {% elif language == "mr" %}
+            पिकाची माहिती
+        {% elif language == "gu" %}
+            પાકની માહિતી
+        {% elif language == "kn" %}
+            ಬೆಳೆ ಮಾಹಿತಿ
+        {% elif language == "pa" %}
+            ਫਸਲ ਦੀ ਜਾਣਕਾਰੀ
+        {% else %}
+            Crop Information
+        {% endif %}
+
+    </h2>
+
+
+    <p>
+
+        <strong>
+
+            {% if language == "bn" %}
+                ফসলের নাম:
+            {% elif language == "hi" %}
+                फसल का नाम:
+            {% elif language == "ta" %}
+                பயிர் பெயர்:
+            {% elif language == "te" %}
+                పంట పేరు:
+            {% elif language == "mr" %}
+                पिकाचे नाव:
+            {% elif language == "gu" %}
+                પાકનું નામ:
+            {% elif language == "kn" %}
+                ಬೆಳೆಯ ಹೆಸರು:
+            {% elif language == "pa" %}
+                ਫਸਲ ਦਾ ਨਾਮ:
+            {% else %}
+                Crop Name:
+            {% endif %}
+
+        </strong>
+
+        {{ crop_name }}
+
+    </p>
+
+</section>
+
+
+<!-- QUALITY -->
+
+<section class="card">
+
+    <h2>
+        🍃
+
+        {% if language == "bn" %}
+            সতেজতা ও গুণমান
+        {% elif language == "hi" %}
+            ताजगी और गुणवत्ता
+        {% elif language == "ta" %}
+            புத்துணர்ச்சி மற்றும் தரம்
+        {% elif language == "te" %}
+            తాజాదనం & నాణ్యత
+        {% elif language == "mr" %}
+            ताजेपणा आणि गुणवत्ता
+        {% elif language == "gu" %}
+            તાજગી અને ગુણવત્તા
+        {% elif language == "kn" %}
+            ತಾಜಾತನ ಮತ್ತು ಗುಣಮಟ್ಟ
+        {% elif language == "pa" %}
+            ਤਾਜ਼ਗੀ ਅਤੇ ਗੁਣਵੱਤਾ
+        {% else %}
+            Freshness & Quality
+        {% endif %}
+
+    </h2>
+
+
+    <p>
+
+        <strong>
+            🍃
+
+            {% if language == "bn" %}
+                সতেজতা:
+            {% elif language == "hi" %}
+                ताजगी:
+            {% elif language == "ta" %}
+                புத்துணர்ச்சி:
+            {% elif language == "te" %}
+                తాజాదనం:
+            {% elif language == "mr" %}
+                ताजेपणा:
+            {% elif language == "gu" %}
+                તાજગી:
+            {% elif language == "kn" %}
+                ತಾಜಾತನ:
+            {% elif language == "pa" %}
+                ਤਾਜ਼ਗੀ:
+            {% else %}
+                Freshness:
+            {% endif %}
+
+        </strong>
+
+        {{ freshness }}%
+
+    </p>
+
+
+    <p>
+
+        <strong>
+            ⚠️
+
+            {% if language == "bn" %}
+                দৃশ্যমান ত্রুটির আনুমানিক পরিমাণ:
+            {% elif language == "hi" %}
+                दिखाई देने वाले दोष का अनुमान:
+            {% elif language == "ta" %}
+                காணக்கூடிய குறைபாட்டின் மதிப்பீடு:
+            {% elif language == "te" %}
+                కనిపించే లోపం అంచనా:
+            {% elif language == "mr" %}
+                दिसणाऱ्या दोषाचे अंदाजे प्रमाण:
+            {% elif language == "gu" %}
+                દેખાતા ખામીનું અંદાજિત પ્રમાણ:
+            {% elif language == "kn" %}
+                ಗೋಚರ ದೋಷದ ಅಂದಾಜು:
+            {% elif language == "pa" %}
+                ਦਿਖਾਈ ਦੇਣ ਵਾਲੀ ਖਰਾਬੀ ਦਾ ਅੰਦਾਜ਼ਾ:
+            {% else %}
+                Estimated Visible Defect:
+            {% endif %}
+
+        </strong>
+
+        {{ defect }}%
+
+    </p>
+
+
+    <p>
+
+        <strong>
+            ⭐
+
+            {% if language == "bn" %}
+                গুণমান:
+            {% elif language == "hi" %}
+                गुणवत्ता:
+            {% elif language == "ta" %}
+                தரம்:
+            {% elif language == "te" %}
+                నాణ్యత:
+            {% elif language == "mr" %}
+                गुणवत्ता:
+            {% elif language == "gu" %}
+                ગુણવત્તા:
+            {% elif language == "kn" %}
+                ಗುಣಮಟ್ಟ:
+            {% elif language == "pa" %}
+                ਗੁਣਵੱਤਾ:
+            {% else %}
+                Quality:
+            {% endif %}
+
+        </strong>
+
+        {{ quality }}
+
+    </p>
+
+</section>
+
+
+<!-- VISUAL ANALYSIS -->
+
+<section class="card">
+
+    <h2>
+        🔍
+
+        {% if language == "bn" %}
+            ভিজ্যুয়াল বিশ্লেষণ
+        {% elif language == "hi" %}
+            दृश्य विश्लेषण
+        {% elif language == "ta" %}
+            காட்சி பகுப்பாய்வு
+        {% elif language == "te" %}
+            దృశ్య విశ్లేషణ
+        {% elif language == "mr" %}
+            दृश्य विश्लेषण
+        {% elif language == "gu" %}
+            દૃશ્ય વિશ્લેષણ
+        {% elif language == "kn" %}
+            ದೃಶ್ಯ ವಿಶ್ಲೇಷಣೆ
+        {% elif language == "pa" %}
+            ਵਿਜ਼ੂਅਲ ਵਿਸ਼ਲੇਸ਼ਣ
+        {% else %}
+            Visual Analysis
+        {% endif %}
+
+    </h2>
+
+
+    <p>
+
+        <strong>
+            ⚫
+
+            {% if language == "bn" %}
+                কালো দাগের এলাকা:
+            {% elif language == "hi" %}
+                गहरे धब्बे का क्षेत्र:
+            {% elif language == "ta" %}
+                கரும்புள்ளி பகுதி:
+            {% elif language == "te" %}
+                నల్ల మచ్చ ప్రాంతం:
+            {% elif language == "mr" %}
+                काळ्या डागांचे क्षेत्र:
+            {% elif language == "gu" %}
+                કાળા ડાઘનું ક્ષેત્ર:
+            {% elif language == "kn" %}
+                ಕಪ್ಪು ಚುಕ್ಕೆ ಪ್ರದೇಶ:
+            {% elif language == "pa" %}
+                ਕਾਲੇ ਧੱਬੇ ਦਾ ਖੇਤਰ:
+            {% else %}
+                Dark Spot Area:
+            {% endif %}
+
+        </strong>
+
+        {{ spots }}%
+
+    </p>
+
+
+    <p>
+
+        <strong>
+            🎨
+
+            {% if language == "bn" %}
+                রঙের পরিবর্তন:
+            {% elif language == "hi" %}
+                रंग में बदलाव:
+            {% elif language == "ta" %}
+                நிறமாற்றம்:
+            {% elif language == "te" %}
+                రంగు మార్పు:
+            {% elif language == "mr" %}
+                रंग बदल:
+            {% elif language == "gu" %}
+                રંગમાં ફેરફાર:
+            {% elif language == "kn" %}
+                ಬಣ್ಣ ಬದಲಾವಣೆ:
+            {% elif language == "pa" %}
+                ਰੰਗ ਵਿੱਚ ਬਦਲਾਅ:
+            {% else %}
+                Discoloration:
+            {% endif %}
+
+        </strong>
+
+        {{ discoloration }}%
+
+    </p>
+
+</section>
+
+
+<!-- ACTION -->
+
+<section class="card">
+
+    <h2>
+        💡
+
+        {% if language == "bn" %}
+            কী করবেন
+        {% elif language == "hi" %}
+            क्या करें
+        {% elif language == "ta" %}
+            என்ன செய்ய வேண்டும்
+        {% elif language == "te" %}
+            ఏమి చేయాలి
+        {% elif language == "mr" %}
+            काय करावे
+        {% elif language == "gu" %}
+            શું કરવું
+        {% elif language == "kn" %}
+            ಏನು ಮಾಡಬೇಕು
+        {% elif language == "pa" %}
+            ਕੀ ਕਰਨਾ ਹੈ
+        {% else %}
+            What To Do
+        {% endif %}
+
+    </h2>
+
+
+    {% for item in action %}
+
+        <p>
+            • {{ item }}
+        </p>
+
+    {% endfor %}
+
+</section>
+
+
+<!-- NOTE -->
+
+<section class="card">
+
+    <h2>
+        🤖
+
+        {% if language == "bn" %}
+            বিশ্লেষণের নোট
+        {% elif language == "hi" %}
+            विश्लेषण नोट
+        {% elif language == "ta" %}
+            பகுப்பாய்வு குறிப்பு
+        {% elif language == "te" %}
+            విశ్లేషణ గమనిక
+        {% elif language == "mr" %}
+            विश्लेषण नोंद
+        {% elif language == "gu" %}
+            વિશ્લેષણ નોંધ
+        {% elif language == "kn" %}
+            ವಿಶ್ಲೇಷಣಾ ಟಿಪ್ಪಣಿ
+        {% elif language == "pa" %}
+            ਵਿਸ਼ਲੇਸ਼ਣ ਨੋਟ
+        {% else %}
+            Analysis Note
+        {% endif %}
+
+    </h2>
+
+
+    <p>
+        {{ note }}
+    </p>
+
+
+    <p>
+
+        ⚠️
+
+        {% if language == "bn" %}
+            প্রশিক্ষিত রোগ শনাক্তকরণ মডেল ছাড়া সিস্টেম নির্ভরযোগ্যভাবে নির্দিষ্ট ফসলের রোগ শনাক্ত করতে পারে না।
+        {% elif language == "hi" %}
+            प्रशिक्षित रोग पहचान मॉडल के बिना सिस्टम किसी विशेष फसल रोग की विश्वसनीय पहचान नहीं कर सकता।
+        {% elif language == "ta" %}
+            பயிற்சி பெற்ற நோய் வகைப்படுத்தல் மாதிரி இல்லாமல் குறிப்பிட்ட பயிர் நோயை நம்பகமாக கண்டறிய முடியாது.
+        {% elif language == "te" %}
+            శిక్షణ పొందిన వ్యాధి గుర్తింపు మోడల్ లేకుండా నిర్దిష్ట పంట వ్యాధిని విశ్వసనీయంగా గుర్తించలేము.
+        {% elif language == "mr" %}
+            प्रशिक्षित रोग वर्गीकरण मॉडेलशिवाय विशिष्ट पिकाचा रोग विश्वासार्हपणे ओळखता येत नाही.
+        {% elif language == "gu" %}
+            પ્રશિક્ષિત રોગ વર્ગીકરણ મોડેલ વિના ચોક્કસ પાકના રોગની વિશ્વસનીય ઓળખ કરી શકાતી નથી.
+        {% elif language == "kn" %}
+            ತರಬೇತಿ ಪಡೆದ ರೋಗ ವರ್ಗೀಕರಣ ಮಾದರಿಯಿಲ್ಲದೆ ನಿರ್ದಿಷ್ಟ ಬೆಳೆ ರೋಗವನ್ನು ವಿಶ್ವಾಸಾರ್ಹವಾಗಿ ಗುರುತಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+        {% elif language == "pa" %}
+            ਸਿਖਲਾਈ ਪ੍ਰਾਪਤ ਬਿਮਾਰੀ ਪਛਾਣ ਮਾਡਲ ਤੋਂ ਬਿਨਾਂ ਸਿਸਟਮ ਕਿਸੇ ਖਾਸ ਫਸਲ ਦੀ ਬਿਮਾਰੀ ਦੀ ਭਰੋਸੇਯੋਗ ਪਛਾਣ ਨਹੀਂ ਕਰ ਸਕਦਾ।
+        {% else %}
+            The system cannot reliably identify a specific crop disease without a trained disease-classification model.
+        {% endif %}
+
+    </p>
+
+</section>
+
+
+<a href="/">
+
+    <button type="button">
+
+        {% if language == "bn" %}
+            ← Smart Krishi AI-তে ফিরে যান
+        {% elif language == "hi" %}
+            ← Smart Krishi AI पर वापस जाएं
+        {% elif language == "ta" %}
+            ← Smart Krishi AI-க்கு திரும்பவும்
+        {% elif language == "te" %}
+            ← Smart Krishi AIకి తిరిగి వెళ్లండి
+        {% elif language == "mr" %}
+            ← Smart Krishi AI वर परत जा
+        {% elif language == "gu" %}
+            ← Smart Krishi AI પર પાછા જાઓ
+        {% elif language == "kn" %}
+            ← Smart Krishi AI ಗೆ ಹಿಂತಿರುಗಿ
+        {% elif language == "pa" %}
+            ← Smart Krishi AI ਤੇ ਵਾਪਸ ਜਾਓ
+        {% else %}
+            ← Back to Smart Krishi AI
+        {% endif %}
+
+    </button>
+
+</a>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+
+        🌱 Smart Krishi AI
+
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

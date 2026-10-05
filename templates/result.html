@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Krishi AI - Result</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+.result-language{
+    position:absolute;
+    right:25px;
+    top:20px;
+    background:white;
+    border:1px solid #9bb8aa;
+    border-radius:9px;
+    padding:9px 13px;
+    color:#164d3b;
+    font-weight:bold;
+}
+
+header{
+    position:relative;
+}
+
+.result-card{
+    border:1px solid #dce8e1;
+    border-radius:14px;
+    padding:20px;
+    margin:18px 0;
+    background:#fff;
+}
+
+.result-item{
+    font-size:18px;
+    margin:12px 0;
+}
+
+.market-item,
+.storage-item{
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:15px;
+    margin:15px 0;
+}
+
+.action-link{
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    background:#087447;
+    color:white;
+    margin-top:10px;
+}
+
+.lang-note{
+    font-size:13px;
+    color:#66786f;
+    margin-top:8px;
+}
+
+@media(max-width:600px){
+    .result-language{
+        position:static;
+        margin-top:12px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🌾 Smart Krishi AI</h1>
+
+    <p id="headerSubtitle">
+        AI-Powered Agriculture Assistant
+    </p>
+
+    <select id="resultLanguage" class="result-language">
+        <option value="en">English</option>
+        <option value="bn">বাংলা</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="pa">ਪੰਜਾਬੀ</option>
+    </select>
+
+</header>
+
+
+<main>
+
+<!-- ================================================= -->
+<!-- WEATHER -->
+<!-- ================================================= -->
+
+{% if show_weather %}
+
+<section class="welcome">
+
+    <h2 data-key="weatherAnalysis">
+        🌦️ Weather Analysis
+    </h2>
+
+    <p data-key="weatherIntro">
+        Current weather information and basic farming
+        guidance for the selected location.
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="weatherInformation">
+        🌦️ Weather Information
+    </h2>
+
+    <p>
+        <strong data-key="locationLabel">📍 Location:</strong>
+        {{ weather_city }}
+
+        {% if weather_country %}
+            , {{ weather_country }}
+        {% endif %}
+    </p>
+
+    <p>
+        <strong data-key="temperatureLabel">🌡️ Temperature:</strong>
+        {{ weather_temperature }} °C
+    </p>
+
+    <p>
+        <strong data-key="conditionLabel">☁️ Condition:</strong>
+        {{ weather_description }}
+    </p>
+
+    <p>
+        <strong data-key="humidityLabel">💧 Humidity:</strong>
+        {{ weather_humidity }} %
+    </p>
+
+    <p>
+        <strong data-key="windLabel">💨 Wind Speed:</strong>
+        {{ weather_wind_speed }} m/s
+    </p>
+
+    <p>
+        <strong data-key="pressureLabel">🔵 Pressure:</strong>
+        {{ weather_pressure }} hPa
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="suitableCrops">
+        🌱 Suitable Crops
+    </h2>
+
+    <p data-key="suitableIntro">
+        Based on the current weather conditions,
+        these crops may be considered:
+    </p>
+
+    {% for crop in suitable_crops %}
+
+        <p class="result-item crop-dynamic">
+            • {{ crop }}
+        </p>
+
+    {% endfor %}
+
+    <p data-key="cropWarning">
+        ⚠️ Final crop selection should also consider
+        soil, season, rainfall and local farming conditions.
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="farmingAdvice">
+        👨‍🌾 Farming Advice
+    </h2>
+
+    {% for item in weather_advice %}
+
+        <p class="result-item advice-dynamic">
+            {{ item }}
+        </p>
+
+    {% endfor %}
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- IRRIGATION -->
+<!-- ================================================= -->
+
+{% elif show_irrigation %}
+
+<section class="welcome">
+
+    <h2 data-key="irrigationAnalysis">
+        💧 Smart Irrigation Analysis
+    </h2>
+
+    <p data-key="irrigationIntro">
+        Irrigation advice based on soil moisture
+        and current weather conditions.
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="inputInformation">
+        📊 Input Information
+    </h2>
+
+    <p>
+        <strong data-key="soilMoistureLabel">💧 Soil Moisture:</strong>
+        {{ irrigation_moisture }} %
+    </p>
+
+    <p>
+        <strong data-key="temperatureLabel">🌡️ Temperature:</strong>
+        {{ irrigation_temperature }} °C
+    </p>
+
+    <p>
+        <strong data-key="humidityLabel">💧 Humidity:</strong>
+        {{ irrigation_humidity }} %
+    </p>
+
+    <p>
+        <strong data-key="rainfallLabel">
+            🌧️ Recent / Expected Rainfall:
+        </strong>
+        {{ irrigation_rainfall }} mm
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="irrigationStatus">
+        💧 Irrigation Status
+    </h2>
+
+    <p style="font-size:25px;font-weight:bold;margin:20px 0;"
+       class="irrigation-status-dynamic">
+        {{ irrigation_status }}
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="irrigationAdvice">
+        👨‍🌾 Irrigation Advice
+    </h2>
+
+    {% for item in irrigation_advice %}
+
+        <p class="result-item advice-dynamic">
+            {{ item }}
+        </p>
+
+    {% endfor %}
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- MARKET -->
+<!-- ================================================= -->
+
+{% elif show_market %}
+
+<section class="welcome">
+
+    <h2 data-key="marketAnalysis">
+        🛒 Smart Market / Mandi Analysis
+    </h2>
+
+    <p data-key="marketIntro">
+        Latest available government mandi price
+        information for your selected crop and location.
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="searchInformation">
+        🔎 Search Information
+    </h2>
+
+    {% if market_state %}
+    <p>
+        <strong data-key="stateLabel">🗺️ State:</strong>
+        {{ market_state }}
+    </p>
+    {% endif %}
+
+    {% if market_district %}
+    <p>
+        <strong data-key="districtLabel">📍 District:</strong>
+        {{ market_district }}
+    </p>
+    {% endif %}
+
+    {% if market_city %}
+    <p>
+        <strong data-key="cityLabel">🏙️ City / Area:</strong>
+        {{ market_city }}
+    </p>
+    {% endif %}
+
+    {% if market_crop %}
+    <p>
+        <strong data-key="cropLabel">🌾 Crop:</strong>
+        {{ market_crop }}
+    </p>
+    {% endif %}
+
+    {% if market_data_level %}
+    <p>
+        <strong data-key="dataLevelLabel">📊 Data Level:</strong>
+        {{ market_data_level }}
+    </p>
+    {% endif %}
+
+    {% if market_message %}
+    <p>
+        ℹ️ {{ market_message }}
+    </p>
+    {% endif %}
+
+</section>
+
+
+{% if market_results %}
+
+<section class="card">
+
+    <h2 data-key="marketComparison">
+        💰 Market Price Comparison
+    </h2>
+
+    <p data-key="marketComparisonIntro">
+        Compare the available mandi prices below.
+        The modal price represents the most commonly
+        occurring transaction price in the available data.
+    </p>
+
+
+    {% for market in market_results %}
+
+    <div class="market-item">
+
+        {% if market.best %}
+
+            <h3>
+
+                🏆
+
+                {% if market.market_name %}
+                    {{ market.market_name }}
+                {% elif market.market %}
+                    {{ market.market }}
+                {% elif market.area %}
+                    {{ market.area }}
+                {% else %}
+                    <span data-key="marketUnavailable">
+                        Market / Area not available
+                    </span>
+                {% endif %}
+
+            </h3>
+
+            <p style="font-weight:bold;font-size:18px;"
+               data-key="bestPrice">
+                ⭐ Best available price option
+            </p>
+
+        {% else %}
+
+            <h3>
+
+                🏪
+
+                {% if market.market_name %}
+                    {{ market.market_name }}
+                {% elif market.market %}
+                    {{ market.market }}
+                {% elif market.area %}
+                    {{ market.area }}
+                {% else %}
+                    <span data-key="marketUnavailable">
+                        Market / Area not available
+                    </span>
+                {% endif %}
+
+            </h3>
+
+        {% endif %}
+
+
+        {% if market.market_name or market.market or market.area %}
+
+        <p>
+
+            📍
+            <strong data-key="marketAreaLabel">
+                Market / Area:
+            </strong>
+
+            {% if market.market_name %}
+                {{ market.market_name }}
+            {% elif market.market %}
+                {{ market.market }}
+            {% else %}
+                {{ market.area }}
+            {% endif %}
+
+        </p>
+
+        {% endif %}
+
+
+        {% if market.location %}
+
+        <p>
+            📍
+            <strong data-key="locationLabel">
+                Location:
+            </strong>
+            {{ market.location }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.state %}
+
+        <p>
+            🗺️
+            <strong data-key="stateLabel">
+                State:
+            </strong>
+            {{ market.state }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.district %}
+
+        <p>
+            📍
+            <strong data-key="districtLabel">
+                District:
+            </strong>
+            {{ market.district }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.commodity %}
+
+        <p>
+            🌾
+            <strong data-key="commodityLabel">
+                Commodity:
+            </strong>
+            {{ market.commodity }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.variety %}
+
+        <p>
+            🌱
+            <strong data-key="varietyLabel">
+                Variety:
+            </strong>
+            {{ market.variety }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.min_price %}
+
+        <p>
+            📉
+            <strong data-key="minimumPrice">
+                Minimum Price:
+            </strong>
+            {{ market.min_price }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.max_price %}
+
+        <p>
+            📈
+            <strong data-key="maximumPrice">
+                Maximum Price:
+            </strong>
+            {{ market.max_price }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.modal_price %}
+
+        <p style="font-size:20px;font-weight:bold;">
+
+            ⭐
+            <strong data-key="modalPrice">
+                Modal Price:
+            </strong>
+
+            {{ market.modal_price }}
+
+        </p>
+
+        {% endif %}
+
+
+        {% if market.date %}
+
+        <p>
+            📅
+            <strong data-key="marketDate">
+                Market Date:
+            </strong>
+            {{ market.date }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.arrival_date %}
+
+        <p>
+            📅
+            <strong data-key="arrivalDate">
+                Arrival Date:
+            </strong>
+            {{ market.arrival_date }}
+        </p>
+
+        {% endif %}
+
+
+        {% if market.map_url %}
+
+        <div style="
+            margin-top:18px;
+            padding-top:15px;
+            border-top:1px solid #ddd;
+        ">
+
+            <a
+                href="{{ market.map_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="action-link"
+                data-key="openMarketMap">
+                🗺️ Open Market Map
+            </a>
+
+            <p class="lang-note"
+               data-key="marketMapNote">
+                📍 Opens the selected mandi in Google Maps
+                using the actual market name and location.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="sellingDecision">
+        👨‍🌾 Selling Decision
+    </h2>
+
+    <p data-key="sellingAdvice1">
+        💡 Compare the modal price, maximum price
+        and market location before deciding where to sell.
+    </p>
+
+    <p data-key="sellingAdvice2">
+        🚚 Transport cost, travel distance, market
+        demand and quality of produce should also
+        be considered before selling.
+    </p>
+
+    <p data-key="sellingAdvice3">
+        ⚠️ Market prices can change frequently.
+        Always verify the latest local price before
+        making a final selling decision.
+    </p>
+
+</section>
+
+
+{% else %}
+
+<section class="card">
+
+    <h2 data-key="marketInformation">
+        🛒 Market Information
+    </h2>
+
+    {% if market_message %}
+
+    <p>
+        ⚠️ {{ market_message }}
+    </p>
+
+    {% else %}
+
+    <p data-key="noMarketData">
+        ⚠️ No market price information is
+        currently available for this search.
+    </p>
+
+    {% endif %}
+
+    <p data-key="noFakeMarket">
+        The system does not generate fake market
+        prices when reliable government data is unavailable.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<!-- ================================================= -->
+<!-- STORAGE FINDER -->
+<!-- ================================================= -->
+
+{% elif show_storage_finder %}
+
+<section class="welcome">
+
+    <h2 data-key="storageFinderTitle">
+        📍 Nearby Storage Finder
+    </h2>
+
+    <p data-key="storageFinderIntro">
+        Storage options for the selected crop
+        near your entered location.
+    </p>
+
+</section>
+
+
+{% if storage_demo %}
+
+<section class="card">
+
+    <h2 data-key="demoData">
+        ⚠️ Demo Data
+    </h2>
+
+    <p data-key="demoDataText">
+        The storage options shown below are sample/demo
+        facilities for demonstration. They are not verified
+        real-world facility listings.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<section class="card">
+
+    <h2 data-key="searchInformation">
+        🔎 Search Information
+    </h2>
+
+    <p>
+        <strong data-key="areaLocationLabel">
+            📍 Area / Location:
+        </strong>
+        {{ storage_finder_location }}
+    </p>
+
+    <p>
+        <strong data-key="selectedCropLabel">
+            🌾 Selected Crop:
+        </strong>
+        {{ storage_finder_crop }}
+    </p>
+
+</section>
+
+
+{% if storage_results %}
+
+<section class="card">
+
+    <h2 data-key="storageOptions">
+        📦 Storage Options
+    </h2>
+
+    {% for storage in storage_results %}
+
+    <div class="storage-item">
+
+        <h3>
+            🏢 {{ storage.name }}
+        </h3>
+
+        {% if storage.location %}
+        <p>
+            📍
+            <strong data-key="locationLabel">
+                Location:
+            </strong>
+            {{ storage.location }}
+        </p>
+        {% endif %}
+
+        {% if storage.distance %}
+        <p>
+            📏
+            <strong data-key="distanceLabel">
+                Distance:
+            </strong>
+            {{ storage.distance }}
+        </p>
+        {% endif %}
+
+        {% if storage.type %}
+        <p>
+            📦
+            <strong data-key="storageTypeLabel">
+                Storage Type:
+            </strong>
+            {{ storage.type }}
+        </p>
+        {% endif %}
+
+        {% if storage.crops %}
+        <p>
+            🌾
+            <strong data-key="cropsLabel">
+                Crops:
+            </strong>
+            {{ storage.crops }}
+        </p>
+        {% endif %}
+
+        {% if storage.rent %}
+        <p>
+            💰
+            <strong data-key="rentLabel">
+                Rent:
+            </strong>
+            {{ storage.rent }}
+        </p>
+        {% endif %}
+
+        {% if storage.availability %}
+        <p>
+            📅
+            <strong data-key="availabilityLabel">
+                Availability:
+            </strong>
+            {{ storage.availability }}
+        </p>
+        {% endif %}
+
+        {% if storage.contact %}
+        <p>
+            📞
+            <strong data-key="contactLabel">
+                Contact:
+            </strong>
+            {{ storage.contact }}
+        </p>
+        {% endif %}
+
+        {% if storage.website %}
+        <p>
+            🌐
+            <strong data-key="websiteLabel">
+                Website:
+            </strong>
+
+            <a
+                href="{{ storage.website }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-key="visitWebsite">
+                Visit Website
+            </a>
+        </p>
+        {% endif %}
+
+        {% if storage.map_url %}
+
+        <p>
+
+            🗺️
+
+            <a
+                href="{{ storage.map_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-key="viewStorageLocation">
+                View Storage Location
+            </a>
+
+        </p>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+</section>
+
+
+{% else %}
+
+<section class="card">
+
+    <h2 data-key="storageInformation">
+        📦 Storage Information
+    </h2>
+
+    <p data-key="noStorage">
+        ⚠️ No verified storage information is
+        available yet for this search.
+    </p>
+
+    <p data-key="storageFuture">
+        We will connect verified local storage information
+        here, including available storage facilities,
+        distance, rent, crop suitability and contact details.
+    </p>
+
+    <p data-key="noFakeStorage">
+        🚫 We do not display fake storage, rent,
+        distance or contact information unless clearly
+        marked as demo data.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<!-- ================================================= -->
+<!-- POST HARVEST -->
+<!-- ================================================= -->
+
+{% elif show_storage %}
+
+<section class="welcome">
+
+    <h2 data-key="storageAnalysis">
+        📦 Storage & Post-Harvest Analysis
+    </h2>
+
+    <p data-key="storageAnalysisIntro">
+        Post-harvest and storage guidance based on
+        the selected crop and storage conditions.
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="storageInformation">
+        📊 Storage Information
+    </h2>
+
+    <p>
+        <strong data-key="selectedCropLabel">
+            🌾 Selected Crop:
+        </strong>
+        {{ storage_crop }}
+    </p>
+
+    <p>
+        <strong data-key="storageTemperatureLabel">
+            🌡️ Storage Temperature:
+        </strong>
+        {{ storage_temperature }} °C
+    </p>
+
+    <p>
+        <strong data-key="storageHumidityLabel">
+            💧 Storage Humidity:
+        </strong>
+        {{ storage_humidity }} %
+    </p>
+
+    <p>
+        <strong data-key="storageDurationLabel">
+            📅 Expected Storage Duration:
+        </strong>
+        {{ storage_days }} days
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="postHarvestGuidance">
+        👨‍🌾 Post-Harvest & Storage Guidance
+    </h2>
+
+    {% for item in storage_advice %}
+
+    <p class="result-item advice-dynamic">
+        {{ item }}
+    </p>
+
+    {% endfor %}
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="important">
+        ⚠️ Important
+    </h2>
+
+    <p data-key="storageImportant1">
+        Storage requirements can vary depending on
+        crop variety, maturity, local conditions and
+        available storage facilities.
+    </p>
+
+    <p data-key="storageImportant2">
+        Always monitor stored produce regularly for
+        spoilage, pests, moisture and quality changes.
+    </p>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- SOIL -->
+<!-- ================================================= -->
+
+{% else %}
+
+<section class="welcome">
+
+    <h2 data-key="cropRecommendationResult">
+        🤖 Crop Recommendation Result
+    </h2>
+
+    <p data-key="recommendationIntro">
+        Based on the information provided,
+        our ML model recommends:
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="soilEnvironment">
+        🧪 Soil & Environment Information
+    </h2>
+
+    <p>
+        <strong data-key="locationLabel">
+            📍 Location:
+        </strong>
+        {{ location }}
+    </p>
+
+    <p>
+        <strong data-key="soilPhLabel">
+            🧪 Soil pH:
+        </strong>
+        {{ ph }}
+    </p>
+
+    <p>
+        <strong data-key="nitrogenLabel">
+            🌱 Nitrogen (N):
+        </strong>
+        {{ nitrogen }}
+    </p>
+
+    <p>
+        <strong data-key="phosphorusLabel">
+            🌱 Phosphorus (P):
+        </strong>
+        {{ phosphorus }}
+    </p>
+
+    <p>
+        <strong data-key="potassiumLabel">
+            🌱 Potassium (K):
+        </strong>
+        {{ potassium }}
+    </p>
+
+    <p>
+        <strong data-key="soilMoistureLabel">
+            💧 Soil Moisture:
+        </strong>
+        {{ moisture }}%
+    </p>
+
+    <p>
+        <strong data-key="temperatureLabel">
+            🌡️ Temperature:
+        </strong>
+        {{ temperature }} °C
+    </p>
+
+    <p>
+        <strong data-key="humidityLabel">
+            💧 Humidity:
+        </strong>
+        {{ humidity }}%
+    </p>
+
+    <p>
+        <strong data-key="rainfallLabel">
+            🌧️ Rainfall:
+        </strong>
+        {{ rainfall }} mm
+    </p>
+
+    <p>
+        <strong data-key="seasonLabel">
+            🌦️ Season:
+        </strong>
+        {{ season }}
+    </p>
+
+</section>
+
+
+<section class="card">
+
+    <h2 data-key="recommendedCrop">
+        🌱 Recommended Crop
+    </h2>
+
+    {% for crop in recommendations %}
+
+    <p
+        class="result-item crop-dynamic"
+        style="font-size:28px;font-weight:bold;margin:20px 0;">
+        {{ crop }}
+    </p>
+
+    {% endfor %}
+
+    <p data-key="mlNote">
+        🤖 Recommendation generated using Machine Learning.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<!-- ================================================= -->
+<!-- BACK -->
+<!-- ================================================= -->
+
+<a href="/">
+
+    <button type="button" data-key="analyzeAgain">
+        ← Analyze Again
+    </button>
+
+</a>
+
+</main>
+
+
+<footer>
+
+    <p data-key="footerText">
+        🌱 Smart Krishi AI • Better Farming • Better Future
+    </p>
+
+</footer>
+
+
+<!-- ================================================= -->
+<!-- LANGUAGE JAVASCRIPT -->
+<!-- ================================================= -->
+
+<script>
+
+const resultLanguage =
+    "{{ language|default('en') }}";
+
+
+const translations = {
+
+en:{
+headerSubtitle:"AI-Powered Agriculture Assistant",
+weatherAnalysis:"🌦️ Weather Analysis",
+weatherIntro:"Current weather information and basic farming guidance for the selected location.",
+weatherInformation:"🌦️ Weather Information",
+locationLabel:"📍 Location:",
+temperatureLabel:"🌡️ Temperature:",
+conditionLabel:"☁️ Condition:",
+humidityLabel:"💧 Humidity:",
+windLabel:"💨 Wind Speed:",
+pressureLabel:"🔵 Pressure:",
+suitableCrops:"🌱 Suitable Crops",
+suitableIntro:"Based on the current weather conditions, these crops may be considered:",
+cropWarning:"⚠️ Final crop selection should also consider soil, season, rainfall and local farming conditions.",
+farmingAdvice:"👨‍🌾 Farming Advice",
+irrigationAnalysis:"💧 Smart Irrigation Analysis",
+irrigationIntro:"Irrigation advice based on soil moisture and current weather conditions.",
+inputInformation:"📊 Input Information",
+soilMoistureLabel:"💧 Soil Moisture:",
+rainfallLabel:"🌧️ Recent / Expected Rainfall:",
+irrigationStatus:"💧 Irrigation Status",
+irrigationAdvice:"👨‍🌾 Irrigation Advice",
+marketAnalysis:"🛒 Smart Market / Mandi Analysis",
+marketIntro:"Latest available government mandi price information for your selected crop and location.",
+searchInformation:"🔎 Search Information",
+stateLabel:"🗺️ State:",
+districtLabel:"📍 District:",
+cityLabel:"🏙️ City / Area:",
+cropLabel:"🌾 Crop:",
+dataLevelLabel:"📊 Data Level:",
+marketComparison:"💰 Market Price Comparison",
+marketComparisonIntro:"Compare the available mandi prices below. The modal price represents the most commonly occurring transaction price in the available data.",
+marketUnavailable:"Market / Area not available",
+bestPrice:"⭐ Best available price option",
+marketAreaLabel:"Market / Area:",
+commodityLabel:"Commodity:",
+varietyLabel:"Variety:",
+minimumPrice:"Minimum Price:",
+maximumPrice:"Maximum Price:",
+modalPrice:"Modal Price:",
+marketDate:"Market Date:",
+arrivalDate:"Arrival Date:",
+openMarketMap:"🗺️ Open Market Map",
+marketMapNote:"📍 Opens the selected mandi in Google Maps using the actual market name and location.",
+sellingDecision:"👨‍🌾 Selling Decision",
+sellingAdvice1:"💡 Compare the modal price, maximum price and market location before deciding where to sell.",
+sellingAdvice2:"🚚 Transport cost, travel distance, market demand and quality of produce should also be considered before selling.",
+sellingAdvice3:"⚠️ Market prices can change frequently. Always verify the latest local price before making a final selling decision.",
+marketInformation:"🛒 Market Information",
+noMarketData:"⚠️ No market price information is currently available for this search.",
+noFakeMarket:"The system does not generate fake market prices when reliable government data is unavailable.",
+storageFinderTitle:"📍 Nearby Storage Finder",
+storageFinderIntro:"Storage options for the selected crop near your entered location.",
+demoData:"⚠️ Demo Data",
+demoDataText:"The storage options shown below are sample/demo facilities for demonstration. They are not verified real-world facility listings.",
+areaLocationLabel:"📍 Area / Location:",
+selectedCropLabel:"🌾 Selected Crop:",
+storageOptions:"📦 Storage Options",
+distanceLabel:"Distance:",
+storageTypeLabel:"Storage Type:",
+cropsLabel:"Crops:",
+rentLabel:"Rent:",
+availabilityLabel:"Availability:",
+contactLabel:"Contact:",
+websiteLabel:"Website:",
+visitWebsite:"Visit Website",
+viewStorageLocation:"View Storage Location",
+storageInformation:"📦 Storage Information",
+noStorage:"⚠️ No verified storage information is available yet for this search.",
+storageFuture:"We will connect verified local storage information here, including available storage facilities, distance, rent, crop suitability and contact details.",
+noFakeStorage:"🚫 We do not display fake storage, rent, distance or contact information unless clearly marked as demo data.",
+storageAnalysis:"📦 Storage & Post-Harvest Analysis",
+storageAnalysisIntro:"Post-harvest and storage guidance based on the selected crop and storage conditions.",
+storageTemperatureLabel:"🌡️ Storage Temperature:",
+storageHumidityLabel:"💧 Storage Humidity:",
+storageDurationLabel:"📅 Expected Storage Duration:",
+postHarvestGuidance:"👨‍🌾 Post-Harvest & Storage Guidance",
+important:"⚠️ Important",
+storageImportant1:"Storage requirements can vary depending on crop variety, maturity, local conditions and available storage facilities.",
+storageImportant2:"Always monitor stored produce regularly for spoilage, pests, moisture and quality changes.",
+cropRecommendationResult:"🤖 Crop Recommendation Result",
+recommendationIntro:"Based on the information provided, our ML model recommends:",
+soilEnvironment:"🧪 Soil & Environment Information",
+soilPhLabel:"🧪 Soil pH:",
+nitrogenLabel:"🌱 Nitrogen (N):",
+phosphorusLabel:"🌱 Phosphorus (P):",
+potassiumLabel:"🌱 Potassium (K):",
+seasonLabel:"🌦️ Season:",
+recommendedCrop:"🌱 Recommended Crop",
+mlNote:"🤖 Recommendation generated using Machine Learning.",
+analyzeAgain:"← Analyze Again",
+footerText:"🌱 Smart Krishi AI • Better Farming • Better Future"
+},
+
+bn:{
+headerSubtitle:"AI-চালিত কৃষি সহায়তা",
+weatherAnalysis:"🌦️ আবহাওয়া বিশ্লেষণ",
+weatherIntro:"নির্বাচিত এলাকার বর্তমান আবহাওয়া এবং কৃষি সংক্রান্ত প্রাথমিক পরামর্শ।",
+weatherInformation:"🌦️ আবহাওয়ার তথ্য",
+locationLabel:"📍 স্থান:",
+temperatureLabel:"🌡️ তাপমাত্রা:",
+conditionLabel:"☁️ অবস্থা:",
+humidityLabel:"💧 আর্দ্রতা:",
+windLabel:"💨 বাতাসের গতি:",
+pressureLabel:"🔵 বায়ুচাপ:",
+suitableCrops:"🌱 উপযুক্ত ফসল",
+suitableIntro:"বর্তমান আবহাওয়ার ভিত্তিতে এই ফসলগুলি বিবেচনা করা যেতে পারে:",
+cropWarning:"⚠️ চূড়ান্ত ফসল নির্বাচনের সময় মাটি, মৌসুম, বৃষ্টিপাত এবং স্থানীয় কৃষি পরিস্থিতিও বিবেচনা করুন।",
+farmingAdvice:"👨‍🌾 কৃষি পরামর্শ",
+irrigationAnalysis:"💧 স্মার্ট সেচ বিশ্লেষণ",
+irrigationIntro:"মাটির আর্দ্রতা এবং বর্তমান আবহাওয়ার ভিত্তিতে সেচের পরামর্শ।",
+inputInformation:"📊 ইনপুট তথ্য",
+soilMoistureLabel:"💧 মাটির আর্দ্রতা:",
+rainfallLabel:"🌧️ সাম্প্রতিক / প্রত্যাশিত বৃষ্টিপাত:",
+irrigationStatus:"💧 সেচের অবস্থা",
+irrigationAdvice:"👨‍🌾 সেচের পরামর্শ",
+marketAnalysis:"🛒 স্মার্ট বাজার / মান্ডি বিশ্লেষণ",
+marketIntro:"নির্বাচিত ফসল ও এলাকার জন্য উপলব্ধ সরকারি মান্ডি দামের তথ্য।",
+searchInformation:"🔎 অনুসন্ধানের তথ্য",
+stateLabel:"🗺️ রাজ্য:",
+districtLabel:"📍 জেলা:",
+cityLabel:"🏙️ শহর / এলাকা:",
+cropLabel:"🌾 ফসল:",
+dataLevelLabel:"📊 ডেটা স্তর:",
+marketComparison:"💰 বাজারদর তুলনা",
+marketComparisonIntro:"উপলব্ধ মান্ডির দাম তুলনা করুন। Modal Price উপলব্ধ ডেটার সবচেয়ে প্রচলিত লেনদেনের দামকে বোঝায়।",
+marketUnavailable:"বাজার / এলাকার তথ্য নেই",
+bestPrice:"⭐ সর্বোত্তম উপলব্ধ দামের বিকল্প",
+marketAreaLabel:"বাজার / এলাকা:",
+commodityLabel:"পণ্য:",
+varietyLabel:"জাত:",
+minimumPrice:"সর্বনিম্ন দাম:",
+maximumPrice:"সর্বোচ্চ দাম:",
+modalPrice:"Modal Price:",
+marketDate:"বাজারের তারিখ:",
+arrivalDate:"আগমনের তারিখ:",
+openMarketMap:"🗺️ বাজারের মানচিত্র খুলুন",
+marketMapNote:"📍 প্রকৃত বাজারের নাম ও অবস্থান ব্যবহার করে Google Maps-এ মান্ডি খুলবে।",
+sellingDecision:"👨‍🌾 বিক্রির সিদ্ধান্ত",
+sellingAdvice1:"💡 কোথায় বিক্রি করবেন তা ঠিক করার আগে Modal Price, সর্বোচ্চ দাম এবং বাজারের অবস্থান তুলনা করুন।",
+sellingAdvice2:"🚚 বিক্রির আগে পরিবহন খরচ, দূরত্ব, বাজারের চাহিদা এবং ফসলের গুণমানও বিবেচনা করুন।",
+sellingAdvice3:"⚠️ বাজারদর ঘন ঘন পরিবর্তিত হতে পারে। চূড়ান্ত সিদ্ধান্তের আগে সর্বশেষ স্থানীয় দাম যাচাই করুন।",
+marketInformation:"🛒 বাজারের তথ্য",
+noMarketData:"⚠️ এই অনুসন্ধানের জন্য বর্তমানে কোনো বাজারদরের তথ্য পাওয়া যাচ্ছে না।",
+noFakeMarket:"নির্ভরযোগ্য সরকারি তথ্য না থাকলে সিস্টেম কোনো ভুয়া বাজারদর তৈরি করে না।",
+storageFinderTitle:"📍 কাছাকাছি স্টোরেজ খুঁজুন",
+storageFinderIntro:"আপনার দেওয়া এলাকার কাছে নির্বাচিত ফসলের জন্য স্টোরেজের বিকল্প।",
+demoData:"⚠️ ডেমো ডেটা",
+demoDataText:"নিচের স্টোরেজগুলি প্রদর্শনের জন্য নমুনা/ডেমো সুবিধা। এগুলি যাচাই করা বাস্তব স্টোরেজ তালিকা নয়।",
+areaLocationLabel:"📍 এলাকা / স্থান:",
+selectedCropLabel:"🌾 নির্বাচিত ফসল:",
+storageOptions:"📦 স্টোরেজের বিকল্প",
+distanceLabel:"দূরত্ব:",
+storageTypeLabel:"স্টোরেজের ধরন:",
+cropsLabel:"ফসল:",
+rentLabel:"ভাড়া:",
+availabilityLabel:"উপলব্ধতা:",
+contactLabel:"যোগাযোগ:",
+websiteLabel:"ওয়েবসাইট:",
+visitWebsite:"ওয়েবসাইট দেখুন",
+viewStorageLocation:"স্টোরেজের অবস্থান দেখুন",
+storageInformation:"📦 স্টোরেজের তথ্য",
+noStorage:"⚠️ এই অনুসন্ধানের জন্য এখনও কোনো যাচাইকৃত স্টোরেজ তথ্য পাওয়া যায়নি।",
+storageFuture:"যাচাইকৃত স্থানীয় স্টোরেজ তথ্য এখানে সংযুক্ত করা হবে, যার মধ্যে সুবিধা, দূরত্ব, ভাড়া, ফসলের উপযুক্ততা এবং যোগাযোগের তথ্য থাকবে।",
+noFakeStorage:"🚫 ডেমো হিসেবে স্পষ্টভাবে চিহ্নিত না হলে আমরা ভুয়া স্টোরেজ, ভাড়া, দূরত্ব বা যোগাযোগের তথ্য দেখাই না।",
+storageAnalysis:"📦 ফসল কাটার পর ও সংরক্ষণ বিশ্লেষণ",
+storageAnalysisIntro:"নির্বাচিত ফসল এবং সংরক্ষণের অবস্থার ভিত্তিতে ফসল কাটার পর ও সংরক্ষণের পরামর্শ।",
+storageTemperatureLabel:"🌡️ সংরক্ষণের তাপমাত্রা:",
+storageHumidityLabel:"💧 সংরক্ষণের আর্দ্রতা:",
+storageDurationLabel:"📅 প্রত্যাশিত সংরক্ষণের সময়:",
+postHarvestGuidance:"👨‍🌾 ফসল কাটার পর ও সংরক্ষণের পরামর্শ",
+important:"⚠️ গুরুত্বপূর্ণ",
+storageImportant1:"ফসলের জাত, পরিপক্বতা, স্থানীয় পরিস্থিতি এবং উপলব্ধ স্টোরেজ সুবিধার উপর সংরক্ষণের প্রয়োজনীয়তা নির্ভর করতে পারে।",
+storageImportant2:"নষ্ট হওয়া, পোকা, আর্দ্রতা এবং গুণমানের পরিবর্তনের জন্য সংরক্ষিত ফসল নিয়মিত পরীক্ষা করুন।",
+cropRecommendationResult:"🤖 ফসল সুপারিশের ফলাফল",
+recommendationIntro:"আপনার দেওয়া তথ্যের ভিত্তিতে আমাদের ML মডেল সুপারিশ করছে:",
+soilEnvironment:"🧪 মাটি ও পরিবেশের তথ্য",
+soilPhLabel:"🧪 মাটির pH:",
+nitrogenLabel:"🌱 নাইট্রোজেন (N):",
+phosphorusLabel:"🌱 ফসফরাস (P):",
+potassiumLabel:"🌱 পটাশিয়াম (K):",
+seasonLabel:"🌦️ মৌসুম:",
+recommendedCrop:"🌱 সুপারিশকৃত ফসল",
+mlNote:"🤖 Machine Learning ব্যবহার করে সুপারিশ তৈরি করা হয়েছে।",
+analyzeAgain:"← আবার বিশ্লেষণ করুন",
+footerText:"🌱 Smart Krishi AI • উন্নত কৃষি • উন্নত ভবিষ্যৎ"
+},
+
+hi:{
+headerSubtitle:"AI-संचालित कृषि सहायता",
+weatherAnalysis:"🌦️ मौसम विश्लेषण",
+weatherIntro:"चयनित स्थान की वर्तमान मौसम जानकारी और कृषि सलाह।",
+weatherInformation:"🌦️ मौसम की जानकारी",
+locationLabel:"📍 स्थान:",
+temperatureLabel:"🌡️ तापमान:",
+conditionLabel:"☁️ स्थिति:",
+humidityLabel:"💧 आर्द्रता:",
+windLabel:"💨 हवा की गति:",
+pressureLabel:"🔵 वायुदाब:",
+suitableCrops:"🌱 उपयुक्त फसलें",
+suitableIntro:"वर्तमान मौसम के आधार पर इन फसलों पर विचार किया जा सकता है:",
+cropWarning:"⚠️ अंतिम फसल चयन में मिट्टी, मौसम, वर्षा और स्थानीय कृषि परिस्थितियों को भी ध्यान में रखें।",
+farmingAdvice:"👨‍🌾 कृषि सलाह",
+irrigationAnalysis:"💧 स्मार्ट सिंचाई विश्लेषण",
+irrigationIntro:"मिट्टी की नमी और वर्तमान मौसम के आधार पर सिंचाई सलाह।",
+inputInformation:"📊 इनपुट जानकारी",
+soilMoistureLabel:"💧 मिट्टी की नमी:",
+rainfallLabel:"🌧️ हाल की / अपेक्षित वर्षा:",
+irrigationStatus:"💧 सिंचाई स्थिति",
+irrigationAdvice:"👨‍🌾 सिंचाई सलाह",
+marketAnalysis:"🛒 स्मार्ट बाजार / मंडी विश्लेषण",
+marketIntro:"चयनित फसल और स्थान के लिए उपलब्ध सरकारी मंडी मूल्य की जानकारी।",
+searchInformation:"🔎 खोज जानकारी",
+stateLabel:"🗺️ राज्य:",
+districtLabel:"📍 जिला:",
+cityLabel:"🏙️ शहर / क्षेत्र:",
+cropLabel:"🌾 फसल:",
+dataLevelLabel:"📊 डेटा स्तर:",
+marketComparison:"💰 बाजार मूल्य तुलना",
+marketComparisonIntro:"उपलब्ध मंडी कीमतों की तुलना करें। Modal Price उपलब्ध डेटा में सबसे सामान्य लेनदेन मूल्य है।",
+marketUnavailable:"बाजार / क्षेत्र उपलब्ध नहीं",
+bestPrice:"⭐ सर्वोत्तम उपलब्ध मूल्य विकल्प",
+marketAreaLabel:"बाजार / क्षेत्र:",
+commodityLabel:"वस्तु:",
+varietyLabel:"किस्म:",
+minimumPrice:"न्यूनतम मूल्य:",
+maximumPrice:"अधिकतम मूल्य:",
+modalPrice:"Modal Price:",
+marketDate:"बाजार की तारीख:",
+arrivalDate:"आवक की तारीख:",
+openMarketMap:"🗺️ मंडी का नक्शा खोलें",
+marketMapNote:"📍 वास्तविक बाजार नाम और स्थान का उपयोग करके Google Maps में मंडी खोली जाएगी।",
+sellingDecision:"👨‍🌾 बिक्री का निर्णय",
+sellingAdvice1:"💡 बेचने का निर्णय लेने से पहले Modal Price, अधिकतम मूल्य और बाजार स्थान की तुलना करें।",
+sellingAdvice2:"🚚 परिवहन लागत, दूरी, बाजार की मांग और फसल की गुणवत्ता को भी ध्यान में रखें।",
+sellingAdvice3:"⚠️ बाजार कीमतें बदल सकती हैं। अंतिम निर्णय से पहले नवीनतम स्थानीय कीमत की पुष्टि करें।",
+marketInformation:"🛒 बाजार की जानकारी",
+noMarketData:"⚠️ इस खोज के लिए अभी बाजार मूल्य की जानकारी उपलब्ध नहीं है।",
+noFakeMarket:"विश्वसनीय सरकारी डेटा उपलब्ध न होने पर सिस्टम नकली बाजार मूल्य नहीं बनाता।",
+storageFinderTitle:"📍 नजदीकी भंडारण खोजें",
+storageFinderIntro:"आपके स्थान के पास चयनित फसल के लिए भंडारण विकल्प।",
+demoData:"⚠️ डेमो डेटा",
+demoDataText:"नीचे दिए गए स्टोरेज विकल्प प्रदर्शन के लिए नमूना/डेमो सुविधाएं हैं। ये सत्यापित वास्तविक सुविधाएं नहीं हैं।",
+areaLocationLabel:"📍 क्षेत्र / स्थान:",
+selectedCropLabel:"🌾 चयनित फसल:",
+storageOptions:"📦 भंडारण विकल्प",
+distanceLabel:"दूरी:",
+storageTypeLabel:"भंडारण प्रकार:",
+cropsLabel:"फसलें:",
+rentLabel:"किराया:",
+availabilityLabel:"उपलब्धता:",
+contactLabel:"संपर्क:",
+websiteLabel:"वेबसाइट:",
+visitWebsite:"वेबसाइट देखें",
+viewStorageLocation:"भंडारण स्थान देखें",
+storageInformation:"📦 भंडारण जानकारी",
+noStorage:"⚠️ इस खोज के लिए अभी कोई सत्यापित भंडारण जानकारी उपलब्ध नहीं है।",
+storageFuture:"सत्यापित स्थानीय भंडारण जानकारी यहां उपलब्ध कराई जाएगी।",
+noFakeStorage:"🚫 डेमो के रूप में स्पष्ट रूप से चिह्नित किए बिना नकली जानकारी नहीं दिखाई जाती।",
+storageAnalysis:"📦 कटाई के बाद और भंडारण विश्लेषण",
+storageAnalysisIntro:"चयनित फसल और भंडारण परिस्थितियों के आधार पर सलाह।",
+storageTemperatureLabel:"🌡️ भंडारण तापमान:",
+storageHumidityLabel:"💧 भंडारण आर्द्रता:",
+storageDurationLabel:"📅 अपेक्षित भंडारण अवधि:",
+postHarvestGuidance:"👨‍🌾 कटाई के बाद और भंडारण सलाह",
+important:"⚠️ महत्वपूर्ण",
+storageImportant1:"भंडारण आवश्यकताएं फसल की किस्म, परिपक्वता और स्थानीय परिस्थितियों पर निर्भर कर सकती हैं।",
+storageImportant2:"भंडारित फसल को नियमित रूप से खराब होने, कीट, नमी और गुणवत्ता के लिए जांचें।",
+cropRecommendationResult:"🤖 फसल सुझाव परिणाम",
+recommendationIntro:"दी गई जानकारी के आधार पर हमारा ML मॉडल सुझाव देता है:",
+soilEnvironment:"🧪 मिट्टी और पर्यावरण की जानकारी",
+soilPhLabel:"🧪 मिट्टी का pH:",
+nitrogenLabel:"🌱 नाइट्रोजन (N):",
+phosphorusLabel:"🌱 फॉस्फोरस (P):",
+potassiumLabel:"🌱 पोटैशियम (K):",
+seasonLabel:"🌦️ मौसम:",
+recommendedCrop:"🌱 सुझाई गई फसल",
+mlNote:"🤖 Machine Learning का उपयोग करके सुझाव बनाया गया है।",
+analyzeAgain:"← फिर से विश्लेषण करें",
+footerText:"🌱 Smart Krishi AI • बेहतर खेती • बेहतर भविष्य"
+},
+
+ta:{
+headerSubtitle:"AI விவசாய உதவியாளர்",
+weatherAnalysis:"🌦️ வானிலை பகுப்பாய்வு",
+weatherIntro:"தேர்ந்தெடுக்கப்பட்ட இடத்திற்கான தற்போதைய வானிலை மற்றும் விவசாய ஆலோசனை.",
+weatherInformation:"🌦️ வானிலை தகவல்",
+locationLabel:"📍 இடம்:",
+temperatureLabel:"🌡️ வெப்பநிலை:",
+conditionLabel:"☁️ நிலை:",
+humidityLabel:"💧 ஈரப்பதம்:",
+windLabel:"💨 காற்றின் வேகம்:",
+pressureLabel:"🔵 காற்றழுத்தம்:",
+suitableCrops:"🌱 ஏற்ற பயிர்கள்",
+suitableIntro:"தற்போதைய வானிலையின் அடிப்படையில் இந்த பயிர்களை பரிசீலிக்கலாம்:",
+cropWarning:"⚠️ இறுதி பயிர் தேர்வில் மண், பருவம், மழை மற்றும் உள்ளூர் விவசாய நிலைமைகளையும் கருத்தில் கொள்ளுங்கள்.",
+farmingAdvice:"👨‍🌾 விவசாய ஆலோசனை",
+irrigationAnalysis:"💧 ஸ்மார்ட் பாசன பகுப்பாய்வு",
+irrigationIntro:"மண் ஈரப்பதம் மற்றும் தற்போதைய வானிலையின் அடிப்படையில் பாசன ஆலோசனை.",
+inputInformation:"📊 உள்ளீட்டு தகவல்",
+soilMoistureLabel:"💧 மண் ஈரப்பதம்:",
+rainfallLabel:"🌧️ சமீபத்திய / எதிர்பார்க்கப்படும் மழை:",
+irrigationStatus:"💧 பாசன நிலை",
+irrigationAdvice:"👨‍🌾 பாசன ஆலோசனை",
+marketAnalysis:"🛒 ஸ்மார்ட் சந்தை / மண்டி பகுப்பாய்வு",
+marketIntro:"தேர்ந்தெடுக்கப்பட்ட பயிர் மற்றும் இடத்திற்கான அரசு மண்டி விலை தகவல்.",
+searchInformation:"🔎 தேடல் தகவல்",
+stateLabel:"🗺️ மாநிலம்:",
+districtLabel:"📍 மாவட்டம்:",
+cityLabel:"🏙️ நகரம் / பகுதி:",
+cropLabel:"🌾 பயிர்:",
+dataLevelLabel:"📊 தரவு நிலை:",
+marketComparison:"💰 சந்தை விலை ஒப்பீடு",
+marketComparisonIntro:"கிடைக்கும் மண்டி விலைகளை ஒப்பிடுங்கள்.",
+marketUnavailable:"சந்தை / பகுதி கிடைக்கவில்லை",
+bestPrice:"⭐ சிறந்த கிடைக்கக்கூடிய விலை",
+marketAreaLabel:"சந்தை / பகுதி:",
+commodityLabel:"பொருள்:",
+varietyLabel:"வகை:",
+minimumPrice:"குறைந்தபட்ச விலை:",
+maximumPrice:"அதிகபட்ச விலை:",
+modalPrice:"Modal Price:",
+marketDate:"சந்தை தேதி:",
+arrivalDate:"வருகை தேதி:",
+openMarketMap:"🗺️ சந்தை வரைபடத்தைத் திறக்கவும்",
+marketMapNote:"📍 உண்மையான சந்தை பெயர் மற்றும் இடத்தைப் பயன்படுத்தி Google Maps திறக்கப்படும்.",
+sellingDecision:"👨‍🌾 விற்பனை முடிவு",
+sellingAdvice1:"💡 விற்பனை செய்வதற்கு முன் Modal Price, அதிகபட்ச விலை மற்றும் சந்தை இடத்தை ஒப்பிடுங்கள்.",
+sellingAdvice2:"🚚 போக்குவரத்து செலவு, தூரம், சந்தை தேவை மற்றும் பயிர் தரத்தையும் கருத்தில் கொள்ளுங்கள்.",
+sellingAdvice3:"⚠️ சந்தை விலைகள் அடிக்கடி மாறலாம். இறுதி முடிவுக்கு முன் சமீபத்திய உள்ளூர் விலையை சரிபார்க்கவும்.",
+marketInformation:"🛒 சந்தை தகவல்",
+noMarketData:"⚠️ இந்த தேடலுக்கு சந்தை விலை தகவல் தற்போது கிடைக்கவில்லை.",
+noFakeMarket:"நம்பகமான அரசு தரவு இல்லையெனில் கணினி போலி சந்தை விலைகளை உருவாக்காது.",
+storageFinderTitle:"📍 அருகிலுள்ள சேமிப்பகத்தைத் தேடுங்கள்",
+storageFinderIntro:"நீங்கள் உள்ளிட்ட இடத்திற்கு அருகிலுள்ள சேமிப்பு விருப்பங்கள்.",
+demoData:"⚠️ டெமோ தரவு",
+demoDataText:"கீழே உள்ள சேமிப்பு விருப்பங்கள் காட்சி நோக்கத்திற்கான டெமோ வசதிகள்.",
+areaLocationLabel:"📍 பகுதி / இடம்:",
+selectedCropLabel:"🌾 தேர்ந்தெடுக்கப்பட்ட பயிர்:",
+storageOptions:"📦 சேமிப்பு விருப்பங்கள்",
+distanceLabel:"தூரம்:",
+storageTypeLabel:"சேமிப்பு வகை:",
+cropsLabel:"பயிர்கள்:",
+rentLabel:"வாடகை:",
+availabilityLabel:"கிடைக்கும் நிலை:",
+contactLabel:"தொடர்பு:",
+websiteLabel:"வலைத்தளம்:",
+visitWebsite:"வலைத்தளத்தைப் பார்க்கவும்",
+viewStorageLocation:"சேமிப்பு இடத்தைப் பார்க்கவும்",
+storageInformation:"📦 சேமிப்பு தகவல்",
+noStorage:"⚠️ இந்த தேடலுக்கு சரிபார்க்கப்பட்ட சேமிப்பு தகவல் இல்லை.",
+storageAnalysis:"📦 அறுவடைக்குப் பிந்தைய சேமிப்பு பகுப்பாய்வு",
+storageAnalysisIntro:"தேர்ந்தெடுக்கப்பட்ட பயிர் மற்றும் சேமிப்பு நிலைமைகளின் அடிப்படையிலான ஆலோசனை.",
+storageTemperatureLabel:"🌡️ சேமிப்பு வெப்பநிலை:",
+storageHumidityLabel:"💧 சேமிப்பு ஈரப்பதம்:",
+storageDurationLabel:"📅 எதிர்பார்க்கப்படும் சேமிப்பு காலம்:",
+postHarvestGuidance:"👨‍🌾 அறுவடைக்குப் பிந்தைய சேமிப்பு ஆலோசனை",
+important:"⚠️ முக்கியம்",
+storageImportant1:"சேமிப்பு தேவைகள் பயிர் வகை மற்றும் உள்ளூர் நிலைமைகளைப் பொறுத்து மாறலாம்.",
+storageImportant2:"சேமிக்கப்பட்ட பயிர்களை தொடர்ந்து கண்காணிக்கவும்.",
+cropRecommendationResult:"🤖 பயிர் பரிந்துரை முடிவு",
+recommendationIntro:"வழங்கப்பட்ட தகவலின் அடிப்படையில் எங்கள் ML மாடல் பரிந்துரைக்கிறது:",
+soilEnvironment:"🧪 மண் மற்றும் சுற்றுச்சூழல் தகவல்",
+soilPhLabel:"🧪 மண் pH:",
+nitrogenLabel:"🌱 நைட்ரஜன் (N):",
+phosphorusLabel:"🌱 பாஸ்பரஸ் (P):",
+potassiumLabel:"🌱 பொட்டாசியம் (K):",
+seasonLabel:"🌦️ பருவம்:",
+recommendedCrop:"🌱 பரிந்துரைக்கப்பட்ட பயிர்",
+mlNote:"🤖 Machine Learning பயன்படுத்தி பரிந்துரை உருவாக்கப்பட்டது.",
+analyzeAgain:"← மீண்டும் பகுப்பாய்வு செய்யவும்",
+footerText:"🌱 Smart Krishi AI • சிறந்த விவசாயம் • சிறந்த எதிர்காலம்"
+}
+
+};
+
+
+/* Other languages use English as safe fallback
+   until their full result dictionary is added. */
+
+translations.te = translations.en;
+translations.mr = translations.en;
+translations.gu = translations.en;
+translations.kn = translations.en;
+translations.pa = translations.en;
+
+
+/* ================================================= */
+/* CROP TRANSLATION */
+/* ================================================= */
+
+const cropNames = {
+
+rice:{
+en:"Rice",bn:"ধান",hi:"चावल",ta:"நெல்",te:"వరి",
+mr:"तांदूळ",gu:"ચોખા",kn:"ಭತ್ತ",pa:"ਝੋਨਾ"
+},
+
+maize:{
+en:"Maize",bn:"ভুট্টা",hi:"मक्का",ta:"மக்காச்சோளம்",te:"మొక్కజొన్న",
+mr:"मका",gu:"મકાઈ",kn:"ಮೆಕ್ಕೆಜೋಳ",pa:"ਮੱਕੀ"
+},
+
+wheat:{
+en:"Wheat",bn:"গম",hi:"गेहूँ",ta:"கோதுமை",te:"గోధుమ",
+mr:"गहू",gu:"ઘઉં",kn:"ಗೋಧಿ",pa:"ਕਣਕ"
+},
+
+potato:{
+en:"Potato",bn:"আলু",hi:"आलू",ta:"உருளைக்கிழங்கு",te:"బంగాళాదుంప",
+mr:"बटाटा",gu:"બટાટા",kn:"ಆಲೂಗಡ್ಡೆ",pa:"ਆਲੂ"
+},
+
+onion:{
+en:"Onion",bn:"পেঁয়াজ",hi:"प्याज",ta:"வெங்காயம்",te:"ఉల్లిపాయ",
+mr:"कांदा",gu:"ડુંગળી",kn:"ಈರುಳ್ಳಿ",pa:"ਪਿਆਜ਼"
+},
+
+tomato:{
+en:"Tomato",bn:"টমেটো",hi:"टमाटर",ta:"தக்காளி",te:"టమాటా",
+mr:"टोमॅटो",gu:"ટામેટું",kn:"ಟೊಮ್ಯಾಟೊ",pa:"ਟਮਾਟਰ"
+},
+
+chilli:{
+en:"Chilli",bn:"মরিচ",hi:"मिर्च",ta:"மிளகாய்",te:"మిరప",
+mr:"मिरची",gu:"મરચું",kn:"ಮೆಣಸಿನಕಾಯಿ",pa:"ਮਿਰਚ"
+},
+
+cucumber:{
+en:"Cucumber",bn:"শসা",hi:"खीरा",ta:"வெள்ளரிக்காய்",te:"దోసకాయ",
+mr:"काकडी",gu:"કાકડી",kn:"ಸೌತೆಕಾಯಿ",pa:"ਖੀਰਾ"
+},
+
+brinjal:{
+en:"Brinjal",bn:"বেগুন",hi:"बैंगन",ta:"கத்திரிக்காய்",te:"వంకాయ",
+mr:"वांगी",gu:"રીંગણ",kn:"ಬದನೆಕಾಯಿ",pa:"ਬੈਂਗਣ"
+},
+
+carrot:{
+en:"Carrot",bn:"গাজর",hi:"गाजर",ta:"கேரட்",te:"క్యారెట్",
+mr:"गाजर",gu:"ગાજર",kn:"ಕ್ಯಾರೆಟ್",pa:"ਗਾਜਰ"
+}
+
+};
+
+
+function normalizeCrop(text){
+
+    return String(text)
+        .replace(/[🌱🌾🌽🍅🥒🍆🥔🥕🧅🌶️•]/g,"")
+        .trim()
+        .toLowerCase()
+        .replace(/_/g," ")
+        .replace(/-/g," ");
+
+}
+
+
+function translateCrop(text,lang){
+
+    const original=String(text);
+
+    const key=normalizeCrop(original);
+
+    let found=null;
+
+    Object.keys(cropNames).forEach(name=>{
+
+        if(key===name){
+            found=name;
+        }
+
+    });
+
+    if(!found){
+        return original;
+    }
+
+    const emoji =
+        original.match(/[🌱🌾🌽🍅🥒🍆🥔🥕🧅🌶️]/u);
+
+    const translated =
+        cropNames[found][lang] ||
+        cropNames[found].en ||
+        original;
+
+    return emoji
+        ? emoji[0]+" "+translated
+        : translated;
+}
+
+
+/* ================================================= */
+/* APPLY LANGUAGE */
+/* ================================================= */
+
+function applyLanguage(lang){
+
+    if(!translations[lang]){
+        lang="en";
+    }
+
+    const t=translations[lang];
+
+
+    document.querySelectorAll("[data-key]")
+        .forEach(el=>{
+
+            const key=el.getAttribute("data-key");
+
+            if(t[key] !== undefined){
+                el.innerHTML=t[key];
+            }
+
+        });
+
+
+    document.getElementById("headerSubtitle")
+        .textContent=t.headerSubtitle;
+
+
+    document.querySelectorAll(".crop-dynamic")
+        .forEach(el=>{
+
+            el.textContent =
+                translateCrop(
+                    el.textContent,
+                    lang
+                );
+
+        });
+
+
+    document.documentElement.lang=lang;
+
+
+    try{
+        localStorage.setItem(
+            "smartKrishiLanguage",
+            lang
+        );
+    }catch(e){}
+
+}
+
+
+/* ================================================= */
+/* LANGUAGE SELECT */
+/* ================================================= */
+
+const languageSelect =
+    document.getElementById("resultLanguage");
+
+
+let selectedLanguage =
+    resultLanguage;
+
+
+try{
+
+    const saved =
+        localStorage.getItem(
+            "smartKrishiLanguage"
+        );
+
+    if(saved){
+        selectedLanguage=saved;
+    }
+
+}catch(e){}
+
+
+if(!translations[selectedLanguage]){
+    selectedLanguage="en";
+}
+
+
+languageSelect.value=selectedLanguage;
+
+
+languageSelect.addEventListener(
+    "change",
+    function(){
+
+        applyLanguage(
+            this.value
+        );
+
+    }
+);
+
+
+applyLanguage(
+    selectedLanguage
+);
+
+</script>
+
+</body>
+</html>
